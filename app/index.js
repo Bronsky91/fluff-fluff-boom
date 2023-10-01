@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import {
   Text,
   View,
@@ -11,16 +11,23 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import BackgroundAnimation from "../components/background";
+import Footer from "../components/footer";
+import PlayerCountButton from "../components/PlayerCountButtton";
 
 SplashScreen.preventAutoHideAsync();
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
+const logoSize = screenWidth * 0.15;
+
+const MIN_PLAYER_COUNT = 2;
+const MAX_PLAYER_COUNT = 10;
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     PermanentMarker: require("../assets/PermanentMarker-Regular.ttf"),
   });
+  const [playerCount, setPlayerCount] = useState(2);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -32,7 +39,12 @@ export default function App() {
     return null;
   }
 
-  const logoSize = screenWidth * 0.15;
+  const decrementDisabled = playerCount === MIN_PLAYER_COUNT;
+  const incrementDisabled = playerCount === MAX_PLAYER_COUNT;
+
+  const changePlayerCount = (change) => {
+    setPlayerCount((pc) => pc + change);
+  };
 
   return (
     <View style={styles.background}>
@@ -60,25 +72,25 @@ export default function App() {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity style={styles.circleButton}>
-              <Text style={[styles.shadowText, styles.buttonSymbol]}>-</Text>
-            </TouchableOpacity>
-            <Text style={[styles.shadowText, styles.numberText]}>2</Text>
-            <TouchableOpacity style={styles.circleButton}>
-              <Text style={[styles.shadowText, styles.buttonSymbol]}>+</Text>
-            </TouchableOpacity>
+            <PlayerCountButton
+              onPress={() => changePlayerCount(-1)}
+              disabled={decrementDisabled}
+              symbol="-"
+            />
+            <Text style={[styles.shadowText, styles.numberText]}>
+              {playerCount}
+            </Text>
+            <PlayerCountButton
+              onPress={() => changePlayerCount(1)}
+              disabled={incrementDisabled}
+              symbol="+"
+            />
           </View>
           <TouchableOpacity style={styles.startButton}>
             <Text style={styles.buttonText}>Start Game</Text>
           </TouchableOpacity>
         </View>
-        <View>
-          <Image
-            source={require("../assets/FFBLogo.png")}
-            resizeMode="contain"
-            style={{ width: logoSize, height: logoSize }}
-          />
-        </View>
+        <Footer />
       </SafeAreaView>
     </View>
   );
@@ -111,21 +123,6 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     marginHorizontal: 50,
-  },
-  circleButton: {
-    borderRadius: 50,
-    backgroundColor: "#38B6FF",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 75,
-    width: 75,
-  },
-  buttonSymbol: {
-    fontFamily: "PermanentMarker",
-    fontSize: 50,
-    color: "white",
-    position: "absolute",
-    top: -5,
   },
   startButton: {
     marginTop: 15,

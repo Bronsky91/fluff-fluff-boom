@@ -1,11 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import {
-  Animated,
-  Easing,
-  ImageBackground,
-  StyleSheet,
-  View,
-} from "react-native";
+import React, { memo, useEffect, useRef } from "react";
+import { Animated, Easing, ImageBackground, StyleSheet } from "react-native";
 
 import backgroundImage from "../assets/background.png";
 import {
@@ -17,7 +11,7 @@ import {
   ANIMATION_DURATION,
 } from "../constants";
 
-export default function BackgroundAnimation() {
+const BackgroundAnimation = memo(() => {
   const initialValue = 0;
   const translateValue = useRef(new Animated.Value(initialValue)).current;
 
@@ -40,10 +34,10 @@ export default function BackgroundAnimation() {
     outputRange: [OUTPUT_RANGE_START, OUTPUT_RANGE_END],
   });
 
-  const AnimetedImage = Animated.createAnimatedComponent(ImageBackground);
+  const AnimatedImage = Animated.createAnimatedComponent(ImageBackground);
 
   return (
-    <AnimetedImage
+    <AnimatedImage
       resizeMode="repeat"
       style={[
         styles.background,
@@ -61,7 +55,9 @@ export default function BackgroundAnimation() {
       source={backgroundImage}
     />
   );
-}
+});
+
+export default BackgroundAnimation;
 
 const styles = StyleSheet.create({
   background: {
