@@ -4,6 +4,8 @@ const screenWidth = Dimensions.get("window").width;
 const logoSize = screenWidth * 0.15;
 
 const Footer = () => {
+  // TODO: Add settings and back icon
+  // TODO: Use props to show or hide footer icons
   return (
     <View>
       <Image

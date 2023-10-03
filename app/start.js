@@ -8,12 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
-import PlayerCountButton from "../components/PlayerCountButtton";
-import { router } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,43 +18,14 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const logoSize = screenWidth * 0.15;
 
-const MIN_PLAYER_COUNT = 2;
-const MAX_PLAYER_COUNT = 10;
-
-// TODO: Implement redux, which probably means we need an AppWrapper component
-
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    PermanentMarker: require("../assets/PermanentMarker-Regular.ttf"),
-  });
-  const [playerCount, setPlayerCount] = useState(2);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  const decrementDisabled = playerCount === MIN_PLAYER_COUNT;
-  const incrementDisabled = playerCount === MAX_PLAYER_COUNT;
-
-  const changePlayerCount = (change) => {
-    setPlayerCount((pc) => pc + change);
-  };
-
-  const onStartPress = () => {
-    // TODO: Redux dispatch to put how many players
-    router.push("start");
-  };
+  // TODO: Use Redux store to get playerCounter
+  const players = [{ number: 1, score: 0 }];
 
   return (
     <View style={styles.background}>
       <BackgroundAnimation />
-      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+      <SafeAreaView style={styles.container}>
         <Image
           source={require("../assets/PAGLogo.png")}
           resizeMode="contain"
@@ -71,32 +39,8 @@ export default function App() {
           }}
         >
           <Text style={[styles.shadowText, styles.headerText]}>
-            HOW MANY PLAYERS?
+            START TIMER
           </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <PlayerCountButton
-              onPress={() => changePlayerCount(-1)}
-              disabled={decrementDisabled}
-              symbol="-"
-            />
-            <Text style={[styles.shadowText, styles.numberText]}>
-              {playerCount}
-            </Text>
-            <PlayerCountButton
-              onPress={() => changePlayerCount(1)}
-              disabled={incrementDisabled}
-              symbol="+"
-            />
-          </View>
-          <TouchableOpacity style={styles.startButton} onPress={onStartPress}>
-            <Text style={styles.buttonText}>Start Game</Text>
-          </TouchableOpacity>
         </View>
         <Footer />
       </SafeAreaView>
