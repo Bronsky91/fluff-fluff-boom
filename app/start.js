@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SplashScreen from "expo-splash-screen";
 import BackgroundAnimation from "../components/background";
@@ -33,6 +34,8 @@ export default function App() {
     { number: 9, score: 0, image: require("../assets/Player9.png") },
     { number: 10, score: 0, image: require("../assets/Player10.png") },
   ];
+
+  const pressHandler = () => {};
 
   return (
     <View style={styles.background}>
@@ -61,8 +64,11 @@ export default function App() {
           <Text style={styles.currentScore}>Current Score</Text>
           {players.map(({ number, score, image }) => (
             <View key={number}>
-              <Image source={image} style={styles.playerImage} />
-              <Text style={styles.scoreText}>{score}</Text>
+              <TouchableOpacity onPress={pressHandler}>
+                {/* change this back to image after testing */}
+                <Image source={image} style={styles.playerImage} />
+                <Text style={styles.scoreText}>{score}</Text>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
