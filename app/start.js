@@ -17,10 +17,22 @@ SplashScreen.preventAutoHideAsync();
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const logoSize = screenWidth * 0.15;
+const imageSize = screenWidth * 0.18;
 
 export default function App() {
   // TODO: Use Redux store to get playerCounter
-  const players = [{ number: 1, score: 0 }];
+  const players = [
+    { number: 1, score: 0, image: require("../assets/Player1.png") },
+    { number: 2, score: 0, image: require("../assets/Player2.png") },
+    { number: 3, score: 0, image: require("../assets/Player3.png") },
+    { number: 4, score: 0, image: require("../assets/Player4.png") },
+    { number: 5, score: 0, image: require("../assets/Player5.png") },
+    { number: 6, score: 0, image: require("../assets/Player6.png") },
+    { number: 7, score: 0, image: require("../assets/Player7.png") },
+    { number: 8, score: 0, image: require("../assets/Player8.png") },
+    { number: 9, score: 0, image: require("../assets/Player9.png") },
+    { number: 10, score: 0, image: require("../assets/Player10.png") },
+  ];
 
   return (
     <View style={styles.background}>
@@ -33,14 +45,26 @@ export default function App() {
         />
         <View
           style={{
-            justifyContent: "space-between",
-            height: screenHeight * 0.5,
+            // justifyContent: "space-between",
+            height: screenHeight * 0.4,
             alignItems: "center",
           }}
         >
-          <Text style={[styles.shadowText, styles.headerText]}>
-            START TIMER
-          </Text>
+          <Text style={[styles.shadowText, styles.headerText]}>START</Text>
+          <Image
+            source={require("../assets/touchicon.png")}
+            style={styles.touchIcon}
+          ></Image>
+          <Text style={[styles.shadowText, styles.headerText]}>TIMER</Text>
+        </View>
+        <View style={styles.imageContainer}>
+          <Text style={styles.currentScore}>Current Score</Text>
+          {players.map(({ number, score, image }) => (
+            <View key={number}>
+              <Image source={image} style={styles.playerImage} />
+              <Text style={styles.scoreText}>{score}</Text>
+            </View>
+          ))}
         </View>
         <Footer />
       </SafeAreaView>
@@ -65,7 +89,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: "PermanentMarker",
-    fontSize: 60,
+    fontSize: 90,
     color: "white",
     textAlign: "center",
   },
@@ -89,5 +113,45 @@ const styles = StyleSheet.create({
     fontFamily: "PermanentMarker",
     fontSize: 20,
     color: "white",
+  },
+  playerImage: {
+    marginTop: 10,
+    width: imageSize,
+    height: imageSize,
+    opacity: 0.6,
+  },
+  imageContainer: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    borderColor: "black",
+    borderWidth: 4,
+    borderRadius: 20,
+    margin: 10,
+    paddingBottom: 100,
+    maxHeight: imageSize * 2.5,
+  },
+  scoreText: {
+    position: "absolute",
+    top: 20,
+    fontFamily: "PermanentMarker",
+    fontSize: 35,
+    color: "white",
+    alignSelf: "center",
+  },
+  touchIcon: {
+    marginTop: -10,
+    marginBottom: -10,
+    height: 60,
+    width: 60,
+  },
+  currentScore: {
+    width: screenWidth * 0.8,
+    textAlign: "center",
+    marginBottom: -screenWidth,
+    color: "white",
+    fontStyle: "italic",
+    opacity: 0.6,
   },
 });
