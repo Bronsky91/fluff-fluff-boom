@@ -48,12 +48,24 @@ export default function App() {
         />
         <View
           style={{
-            // justifyContent: "space-between",
             height: screenHeight * 0.4,
             alignItems: "center",
+            width: "100%",
           }}
         >
-          <Text style={[styles.shadowText, styles.headerText]}>START</Text>
+          <Text
+            style={[
+              styles.shadowText,
+              styles.headerText,
+              {
+                borderWidth: 1,
+                borderColor: "red",
+                // TODO: increase width to not cut of letters
+              },
+            ]}
+          >
+            START
+          </Text>
           <Image
             source={require("../assets/touchicon.png")}
             style={styles.touchIcon}

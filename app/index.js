@@ -24,9 +24,12 @@ const logoSize = screenWidth * 0.15;
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
 
-// TODO: Implement redux, which probably means we need an AppWrapper component
+// TODO: Implement redux
+export default function AppWrapper() {
+  return <App />;
+}
 
-export default function App() {
+function App() {
   const [fontsLoaded] = useFonts({
     PermanentMarker: require("../assets/PermanentMarker-Regular.ttf"),
   });
