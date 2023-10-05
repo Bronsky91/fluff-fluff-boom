@@ -20,10 +20,18 @@ const playersSlice = createSlice({
     // removePlayer - remove player object based on the number
     increaseScore: (state, action) => {
       const playerNumber = action.payload;
-
-      // TODO: find the player with the same playerNumber and increase their score
+      const playerIndex = state.players.findIndex(
+        (player) => player.number === playerNumber
+      );
+      state.players[playerIndex].score += 1;
     },
-    // decreaseScore
+    decreaseScore: (state, action) => {
+      const playerNumber = action.payload;
+      const playerIndex = state.players.findIndex(
+        (player) => player.number === playerNumber
+      );
+      state.players[playerIndex].score -= 1;
+    },
   },
 });
 

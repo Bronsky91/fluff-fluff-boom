@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
-import { useSelector, Provider } from "react-redux";
+import { useSelector, Provider, useDispatch } from "react-redux";
 import { PLAYER_IMAGES } from "../constants";
 import store from "../store/index";
+import { playersActions } from "../store/index";
 import {
   Text,
   View,
@@ -31,10 +32,12 @@ export default function AppWrapper() {
   );
 }
 function App() {
-  // TODO: Use Redux store to get playerCounter
   const players = useSelector((state) => state.playersSlice.players);
+  const dispatch = useDispatch();
 
-  const pressHandler = () => {};
+  const pressHandler = (number) => {
+    dispatch(playersActions.increaseScore(number));
+  };
 
   return (
     <View style={styles.background}>
@@ -67,7 +70,7 @@ function App() {
           <Text style={styles.currentScore}>Current Score</Text>
           {players.map(({ number, score }) => (
             <View key={number}>
-              <TouchableOpacity onPress={pressHandler}>
+              <TouchableOpacity onPress={() => pressHandler(number)}>
                 {/* change this back to image after testing */}
                 <Image
                   source={PLAYER_IMAGES[number]}
