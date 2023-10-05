@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { Provider, useDispatch } from "react-redux";
 import {
   Text,
   View,
@@ -14,6 +15,8 @@ import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
 import { router } from "expo-router";
+import store from "../store/index";
+import { playersActions } from "../store/index";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,7 +29,11 @@ const MAX_PLAYER_COUNT = 10;
 
 // TODO: Implement redux
 export default function AppWrapper() {
-  return <App />;
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
 }
 
 function App() {
@@ -34,6 +41,15 @@ function App() {
     PermanentMarker: require("../assets/PermanentMarker-Regular.ttf"),
   });
   const [playerCount, setPlayerCount] = useState(2);
+
+  const dispatch = useDispatch();
+
+  const onStartPress = () => {
+    for (let i = 2; i < playerCount; i++) {
+      dispatch(playersActions.addPlayer());
+    }
+    router.push("start");
+  };
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -50,11 +66,6 @@ function App() {
 
   const changePlayerCount = (change) => {
     setPlayerCount((pc) => pc + change);
-  };
-
-  const onStartPress = () => {
-    // TODO: Redux dispatch to put how many players
-    router.push("start");
   };
 
   return (

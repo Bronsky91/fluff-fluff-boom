@@ -1,4 +1,7 @@
 import { useCallback, useState } from "react";
+import { useSelector, Provider } from "react-redux";
+import { PLAYER_IMAGES } from "../constants";
+import store from "../store/index";
 import {
   Text,
   View,
@@ -20,20 +23,16 @@ const screenHeight = Dimensions.get("window").height;
 const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.18;
 
-export default function App() {
+export default function AppWrapper() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
+function App() {
   // TODO: Use Redux store to get playerCounter
-  const players = [
-    { number: 1, score: 0, image: require("../assets/Player1.png") },
-    { number: 2, score: 0, image: require("../assets/Player2.png") },
-    { number: 3, score: 0, image: require("../assets/Player3.png") },
-    { number: 4, score: 0, image: require("../assets/Player4.png") },
-    { number: 5, score: 0, image: require("../assets/Player5.png") },
-    { number: 6, score: 0, image: require("../assets/Player6.png") },
-    { number: 7, score: 0, image: require("../assets/Player7.png") },
-    { number: 8, score: 0, image: require("../assets/Player8.png") },
-    { number: 9, score: 0, image: require("../assets/Player9.png") },
-    { number: 10, score: 0, image: require("../assets/Player10.png") },
-  ];
+  const players = useSelector((state) => state.playersSlice.players);
 
   const pressHandler = () => {};
 
@@ -54,15 +53,7 @@ export default function App() {
           }}
         >
           <Text
-            style={[
-              styles.shadowText,
-              styles.headerText,
-              {
-                borderWidth: 1,
-                borderColor: "red",
-                // TODO: increase width to not cut of letters
-              },
-            ]}
+            style={[styles.shadowText, styles.headerText, { width: "100%" }]}
           >
             START
           </Text>
@@ -74,11 +65,14 @@ export default function App() {
         </View>
         <View style={styles.imageContainer}>
           <Text style={styles.currentScore}>Current Score</Text>
-          {players.map(({ number, score, image }) => (
+          {players.map(({ number, score }) => (
             <View key={number}>
               <TouchableOpacity onPress={pressHandler}>
                 {/* change this back to image after testing */}
-                <Image source={image} style={styles.playerImage} />
+                <Image
+                  source={PLAYER_IMAGES[number]}
+                  style={styles.playerImage}
+                />
                 <Text style={styles.scoreText}>{score}</Text>
               </TouchableOpacity>
             </View>

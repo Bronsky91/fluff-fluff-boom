@@ -1,19 +1,26 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const initialPlayersState = [
-  { number: 1, score: 0 },
-  { number: 2, score: 0 },
-];
+const initialPlayersState = {
+  players: [
+    { number: 1, score: 0 },
+    { number: 2, score: 0 },
+  ],
+};
 
 const playersSlice = createSlice({
   name: "players",
   initialState: initialPlayersState,
   reducers: {
-    // addPlayer - add new player object to the players state
+    addPlayer: (state) => {
+      state.players.push({
+        number: state.players[state.players.length - 1].number + 1,
+        score: 0,
+      });
+    },
     // removePlayer - remove player object based on the number
     increaseScore: (state, action) => {
       const playerNumber = action.payload;
+
       // TODO: find the player with the same playerNumber and increase their score
     },
     // decreaseScore
