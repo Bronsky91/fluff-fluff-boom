@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import Switch from "../components/SwitchButton";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -49,6 +50,14 @@ function Settings() {
   const announcerToggle = () => {
     dispatch(settingsActions.toggleAnnouncer());
   };
+  const videoPressHandler = () => {
+    Linking.openURL("https://www.youtube.com/watch?v=1gZCTsUQZcs");
+  };
+  const rulebookPressHandler = () => {
+    Linking.openURL(
+      "https://www.playagaingamesofficial.com/fluff-fluff-boom#pdf"
+    );
+  };
 
   return (
     <View style={styles.background}>
@@ -82,8 +91,7 @@ function Settings() {
             <Text style={[styles.settingsText, styles.shadowText]}>
               How To Play
             </Text>
-            {/*TODO: Link video explaining how to play*/}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={videoPressHandler}>
               <Image
                 source={require("../assets/youtubelink.png")}
                 style={styles.images}
@@ -95,7 +103,7 @@ function Settings() {
               Rule Book
             </Text>
             {/*TODO: Link to rulebook*/}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={rulebookPressHandler}>
               <Image
                 source={require("../assets/rulebook.png")}
                 style={styles.images}

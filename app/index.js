@@ -28,7 +28,7 @@ export default function App() {
 
   useFocusEffect(
     useCallback(() => {
-      // TODO: Reset player slice to initial state when hitting this screen
+      dispatch(playersActions.nukePlayers());
       setPlayerCount(2);
     }, [])
   );

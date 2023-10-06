@@ -11,6 +11,9 @@ const playersSlice = createSlice({
   name: "players",
   initialState: initialPlayersState,
   reducers: {
+    nukePlayers: (state) => {
+      state.players = initialPlayersState.players;
+    },
     addPlayer: (state) => {
       state.players.push({
         number: state.players[state.players.length - 1].number + 1,
