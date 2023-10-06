@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { PLAYER_IMAGES } from "../constants";
-import { playersActions } from "../store/index";
+import { playersActions } from "../store/playersSlice";
 import {
   Text,
   View,
@@ -20,7 +20,7 @@ const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.18;
 
 export default function Start() {
-  const players = useSelector((state) => state.playersSlice.players);
+  const players = useSelector((state) => state.players.players);
   const dispatch = useDispatch();
 
   const pressHandler = (number) => {

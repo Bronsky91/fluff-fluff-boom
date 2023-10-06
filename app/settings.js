@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useDispatch, useSelector, Provider } from "react-redux";
 
 import {
   Text,
@@ -13,6 +13,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as SplashScreen from "expo-splash-screen";
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
+import { settingsActions } from "../store/settingsSlice";
+import store from "../store/index";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,9 +22,34 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const logoSize = screenWidth * 0.2;
 
-export default function Settings() {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+export default function AppWrapper() {
+  return (
+    <Provider store={store}>
+      <Settings />
+    </Provider>
+  );
+}
+
+function Settings() {
+  const dispatch = useDispatch();
+  const sfxValue = useSelector((state) => state.settings.soundEffects);
+  const musicValue = useSelector((state) => state.settings.music);
+  const timerSoundValue = useSelector((state) => state.settings.timerSound);
+  const announcerValue = useSelector((state) => state.settings.announcer);
+
+  const soundEffectsToggle = () => {
+    dispatch(settingsActions.toggleSoundEffects());
+  };
+  const musicToggle = () => {
+    dispatch(settingsActions.toggleMusic());
+  };
+  const timerSoundToggle = () => {
+    dispatch(settingsActions.toggleTimerSound());
+  };
+  const announcerToggle = () => {
+    dispatch(settingsActions.toggleAnnouncer());
+  };
+
   return (
     <View style={styles.background}>
       <BackgroundAnimation />
@@ -33,28 +60,29 @@ export default function Settings() {
             <Text style={[styles.settingsText, styles.shadowText]}>
               Sound Effects
             </Text>
-            <Switch onValueChange={toggleSwitch} value={isEnabled} />
+            <Switch onValueChange={soundEffectsToggle} value={sfxValue} />
           </View>
           <View style={styles.settingsItem}>
             <Text style={[styles.settingsText, styles.shadowText]}>Music</Text>
-            <Switch onValueChange={toggleSwitch} value={isEnabled} />
+            <Switch onValueChange={musicToggle} value={musicValue} />
           </View>
           <View style={styles.settingsItem}>
             <Text style={[styles.settingsText, styles.shadowText]}>
               Timer Sound
             </Text>
-            <Switch onValueChange={toggleSwitch} value={isEnabled} />
+            <Switch onValueChange={timerSoundToggle} value={timerSoundValue} />
           </View>
           <View style={styles.settingsItem}>
             <Text style={[styles.settingsText, styles.shadowText]}>
               Announcer
             </Text>
-            <Switch onValueChange={toggleSwitch} value={isEnabled} />
+            <Switch onValueChange={announcerToggle} value={announcerValue} />
           </View>
           <View style={styles.settingsItem}>
             <Text style={[styles.settingsText, styles.shadowText]}>
               How To Play
             </Text>
+            {/*TODO: Link video explaining how to play*/}
             <TouchableOpacity>
               <Image
                 source={require("../assets/youtubelink.png")}
@@ -66,6 +94,7 @@ export default function Settings() {
             <Text style={[styles.settingsText, styles.shadowText]}>
               Rule Book
             </Text>
+            {/*TODO: Link to rulebook*/}
             <TouchableOpacity>
               <Image
                 source={require("../assets/rulebook.png")}

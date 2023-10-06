@@ -13,7 +13,7 @@ import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
 import { router } from "expo-router";
-import { playersActions } from "../store/index";
+import { playersActions } from "../store/playersSlice";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
