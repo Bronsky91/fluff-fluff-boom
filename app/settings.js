@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   settingsText: {
     fontFamily: "PermanentMarker",
-    fontSize: 35,
+    fontSize: 30,
     color: "white",
     marginRight: screenWidth * 0.1,
   },

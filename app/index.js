@@ -114,13 +114,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: "PermanentMarker",
-    fontSize: 60,
+    fontSize: 56,
     color: "white",
     textAlign: "center",
   },
   numberText: {
     fontFamily: "PermanentMarker",
-    fontSize: 70,
+    fontSize: 60,
     color: "white",
     textAlign: "center",
     marginHorizontal: 50,

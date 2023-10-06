@@ -1,4 +1,10 @@
-import { Dimensions, Image, View, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Image,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { router, usePathname } from "expo-router";
 
 const screenWidth = Dimensions.get("window").width;
@@ -23,6 +29,7 @@ const Footer = () => {
         width: screenWidth * 0.8,
         justifyContent: "space-between",
         alignItems: "center",
+        marginBottom: Platform.OS === "android" ? 10 : 0,
       }}
     >
       <TouchableOpacity

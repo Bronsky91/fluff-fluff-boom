@@ -92,16 +92,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: "PermanentMarker",
-    fontSize: 90,
+    fontSize: 80,
     color: "white",
     textAlign: "center",
-  },
-  numberText: {
-    fontFamily: "PermanentMarker",
-    fontSize: 70,
-    color: "white",
-    textAlign: "center",
-    marginHorizontal: 50,
   },
   startButton: {
     marginTop: 15,
