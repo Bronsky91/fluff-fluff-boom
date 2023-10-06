@@ -6,7 +6,12 @@ const initialPlayersState = {
     { number: 2, score: 0 },
   ],
 };
-
+const initialSettingsState = {
+  soundEffects: "false",
+  music: "false",
+  timerSound: "false",
+  announcer: "false",
+};
 const playersSlice = createSlice({
   name: "players",
   initialState: initialPlayersState,
@@ -37,7 +42,7 @@ const playersSlice = createSlice({
 
 const settingsSlice = createSlice({
   name: "settings",
-  initialState: {},
+  initialState: initialSettingsState,
   reducers: {},
 });
 
