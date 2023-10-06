@@ -1,7 +1,5 @@
-import { useCallback, useState } from "react";
-import { useSelector, Provider, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { PLAYER_IMAGES } from "../constants";
-import store from "../store/index";
 import { playersActions } from "../store/index";
 import {
   Text,
@@ -13,25 +11,15 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as SplashScreen from "expo-splash-screen";
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
-
-SplashScreen.preventAutoHideAsync();
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.18;
 
-export default function AppWrapper() {
-  return (
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-}
-function App() {
+export default function Start() {
   const players = useSelector((state) => state.playersSlice.players);
   const dispatch = useDispatch();
 

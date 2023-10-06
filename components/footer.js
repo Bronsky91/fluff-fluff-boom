@@ -11,6 +11,10 @@ const Footer = () => {
     router.push("settings");
   };
 
+  const backButton = () => {
+    router.back();
+  };
+
   return (
     <View
       style={{
@@ -31,7 +35,11 @@ const Footer = () => {
         resizeMode="contain"
         style={{ width: logoSize, height: logoSize }}
       />
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={backButton}
+        style={!router.canGoBack() && { opacity: 0 }}
+        disabled={!router.canGoBack()}
+      >
         <Image
           source={require("../assets/backbutton.png")}
           resizeMode="contain"

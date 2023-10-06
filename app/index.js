@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Text,
   View,
@@ -7,19 +7,13 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Switch,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
 import { router } from "expo-router";
-import store from "../store/index";
 import { playersActions } from "../store/index";
-
-SplashScreen.preventAutoHideAsync();
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -28,19 +22,7 @@ const logoSize = screenWidth * 0.15;
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
 
-// TODO: Implement redux
-export default function AppWrapper() {
-  return (
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-}
-
-function App() {
-  const [fontsLoaded] = useFonts({
-    PermanentMarker: require("../assets/PermanentMarker-Regular.ttf"),
-  });
+export default function App() {
   const [playerCount, setPlayerCount] = useState(2);
 
   const dispatch = useDispatch();
@@ -52,16 +34,6 @@ function App() {
     router.push("start");
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
   const decrementDisabled = playerCount === MIN_PLAYER_COUNT;
   const incrementDisabled = playerCount === MAX_PLAYER_COUNT;
 
@@ -72,7 +44,7 @@ function App() {
   return (
     <View style={styles.background}>
       <BackgroundAnimation />
-      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+      <SafeAreaView style={styles.container}>
         <Image
           source={require("../assets/PAGLogo.png")}
           resizeMode="contain"
