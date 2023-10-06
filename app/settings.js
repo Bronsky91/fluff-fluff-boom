@@ -1,5 +1,4 @@
 import { useDispatch, useSelector, Provider } from "react-redux";
-
 import {
   Text,
   View,

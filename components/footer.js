@@ -3,6 +3,7 @@ import { router, usePathname } from "expo-router";
 
 const screenWidth = Dimensions.get("window").width;
 const logoSize = screenWidth * 0.15;
+const imageSize = screenWidth * 0.09;
 
 const Footer = () => {
   const settingsPressHandler = () => {
@@ -21,6 +22,7 @@ const Footer = () => {
         flexDirection: "row",
         width: screenWidth * 0.8,
         justifyContent: "space-between",
+        alignItems: "center",
       }}
     >
       <TouchableOpacity
@@ -31,7 +33,7 @@ const Footer = () => {
         <Image
           source={require("../assets/Settings.png")}
           resizeMode="contain"
-          style={{ width: logoSize, height: logoSize }}
+          style={{ width: imageSize, height: imageSize }}
         />
       </TouchableOpacity>
       <Image
@@ -47,7 +49,7 @@ const Footer = () => {
         <Image
           source={require("../assets/backbutton.png")}
           resizeMode="contain"
-          style={{ width: logoSize, height: logoSize }}
+          style={{ width: imageSize, height: imageSize }}
         />
       </TouchableOpacity>
     </View>
