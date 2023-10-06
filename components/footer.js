@@ -1,12 +1,10 @@
 import { Dimensions, Image, View, TouchableOpacity } from "react-native";
-
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 
 const screenWidth = Dimensions.get("window").width;
 const logoSize = screenWidth * 0.15;
 
 const Footer = () => {
-  // TODO: Use props to show or hide footer icons
   const settingsPressHandler = () => {
     router.push("settings");
   };
@@ -14,6 +12,8 @@ const Footer = () => {
   const backButton = () => {
     router.back();
   };
+
+  const pathName = usePathname();
 
   return (
     <View
@@ -23,7 +23,11 @@ const Footer = () => {
         justifyContent: "space-between",
       }}
     >
-      <TouchableOpacity onPress={settingsPressHandler}>
+      <TouchableOpacity
+        onPress={settingsPressHandler}
+        style={pathName === "/settings" && { opacity: 0 }}
+        disabled={pathName === "/settings"}
+      >
         <Image
           source={require("../assets/Settings.png")}
           resizeMode="contain"
