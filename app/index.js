@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   Text,
@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { playersActions } from "../store/index";
 
 const screenWidth = Dimensions.get("window").width;
@@ -24,8 +24,14 @@ const MAX_PLAYER_COUNT = 10;
 
 export default function App() {
   const [playerCount, setPlayerCount] = useState(2);
-
   const dispatch = useDispatch();
+
+  useFocusEffect(
+    useCallback(() => {
+      // TODO: Reset player slice to initial state when hitting this screen
+      setPlayerCount(2);
+    }, [])
+  );
 
   const onStartPress = () => {
     for (let i = 2; i < playerCount; i++) {

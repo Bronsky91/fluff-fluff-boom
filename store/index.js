@@ -12,10 +12,12 @@ const initialSettingsState = {
   timerSound: "false",
   announcer: "false",
 };
+
 const playersSlice = createSlice({
   name: "players",
   initialState: initialPlayersState,
   reducers: {
+    // TODO: Nuke reducer, that just sets the state to the initalPlayersState
     addPlayer: (state) => {
       state.players.push({
         number: state.players[state.players.length - 1].number + 1,
