@@ -49,6 +49,12 @@ export default function Layout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="score"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </Provider>
   );

@@ -28,7 +28,8 @@ export default function Start() {
     dispatch(playersActions.increaseScore(number));
   };
   const startTimerHandler = () => {
-    router.push("timer");
+    // router.push("timer");
+    router.push("score");
   };
 
   return (

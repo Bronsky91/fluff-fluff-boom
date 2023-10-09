@@ -7,6 +7,7 @@ import {
 } from "react-native";
 
 import { useEffect, useState, useRef } from "react";
+import { router } from "expo-router";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -43,11 +44,14 @@ export default function Timer() {
   useEffect(() => {
     if (timer === 0) {
       clearInterval(timerIntervalRef.current);
+      router.push("score");
     }
   }, [timer]);
 
   const flipTimerHandler = () => {
-    setTimer(Math.abs(timer - 15));
+    if (timer !== 15) {
+      setTimer(Math.abs(timer - 15));
+    }
   };
 
   return (
