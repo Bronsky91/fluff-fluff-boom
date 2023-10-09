@@ -39,7 +39,7 @@ export default function Settings() {
       "https://www.playagaingamesofficial.com/fluff-fluff-boom#pdf"
     );
   };
-  //TODO: make settingitem component
+
   return (
     <View style={styles.background}>
       <BackgroundAnimation />

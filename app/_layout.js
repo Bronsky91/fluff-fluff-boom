@@ -43,6 +43,12 @@ export default function Layout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="timer"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </Provider>
   );

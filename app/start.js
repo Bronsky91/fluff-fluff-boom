@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import { router } from "expo-router";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackgroundAnimation from "../components/background";
@@ -26,6 +27,9 @@ export default function Start() {
   const pressHandler = (number) => {
     dispatch(playersActions.increaseScore(number));
   };
+  const startTimerHandler = () => {
+    router.push("timer");
+  };
 
   return (
     <View style={styles.background}>
@@ -36,7 +40,8 @@ export default function Start() {
           resizeMode="contain"
           style={{ width: logoSize, height: logoSize }}
         />
-        <View
+        <TouchableOpacity
+          onPress={startTimerHandler}
           style={{
             height: screenHeight * 0.4,
             alignItems: "center",
@@ -53,7 +58,7 @@ export default function Start() {
             style={styles.touchIcon}
           ></Image>
           <Text style={[styles.shadowText, styles.headerText]}>TIMER</Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.imageContainer}>
           <Text style={styles.currentScore}>Current Score</Text>
           {players.map(({ number, score }) => (
