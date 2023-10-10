@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -44,6 +45,22 @@ export default function Score() {
   const resetHandler = () => {
     dispatch(playersActions.resetScore());
   };
+  const winAlert = (number) => {
+    Alert.alert("Winner!", "This will end the game, are you sure?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          dispatch(playersActions.increaseScore(number));
+          router.push("winner");
+        },
+      },
+    ]);
+  };
 
   return (
     <View style={styles.background}>
@@ -60,8 +77,9 @@ export default function Score() {
               style={styles.playerButton}
               key={number}
               onPress={() => {
-                !increaseDisabled(score) ? pressHandler(number) : null;
-                // todo: add winning screen at null
+                !increaseDisabled(score)
+                  ? pressHandler(number)
+                  : winAlert(number);
               }}
               onLongPress={() => {
                 !decreaseDisabled(score) && longPressHandler(number);
