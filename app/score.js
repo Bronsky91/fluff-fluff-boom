@@ -19,9 +19,18 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const imageSize = screenWidth * 0.2;
 
+const MIN_SCORE = 0;
+const MAX_SCORE = 14;
+
 export default function Score() {
   const players = useSelector((state) => state.players.players);
   const dispatch = useDispatch();
+  const decreaseDisabled = (score) => {
+    return score <= MIN_SCORE;
+  };
+  const increaseDisabled = (score) => {
+    return score >= MAX_SCORE;
+  };
 
   const pressHandler = (number) => {
     dispatch(playersActions.increaseScore(number));
@@ -36,7 +45,6 @@ export default function Score() {
     dispatch(playersActions.resetScore());
   };
 
-  //todo: max score and winning screen
   return (
     <View style={styles.background}>
       <BackgroundAnimation />
@@ -51,8 +59,13 @@ export default function Score() {
             <TouchableOpacity
               style={styles.playerButton}
               key={number}
-              onPress={() => pressHandler(number)}
-              onLongPress={() => longPressHandler(number)}
+              onPress={() => {
+                !increaseDisabled(score) ? pressHandler(number) : null;
+                // todo: add winning screen at null
+              }}
+              onLongPress={() => {
+                !decreaseDisabled(score) && longPressHandler(number);
+              }}
             >
               <Image
                 source={PLAYER_IMAGES[number]}

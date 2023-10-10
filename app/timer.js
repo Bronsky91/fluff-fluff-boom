@@ -21,7 +21,7 @@ const smallerFontSize = Math.round(screenWidth * 0.5);
 export default function Timer() {
   const timerIntervalRef = useRef(0);
   const countdownIntervalRef = useRef(0);
-  const [countdown, setCountdown] = useState(3);
+  const [countdown, setCountdown] = useState(4);
   const [timer, setTimer] = useState(15);
 
   useEffect(() => {
@@ -63,11 +63,11 @@ export default function Timer() {
       <BackgroundAnimation />
       <SafeAreaView style={styles.container}>
         <TouchableOpacity onPress={flipTimerHandler} style={styles.button}>
-          {countdown !== 0 ? (
-            <Text style={styles.countdownText}>{countdown}</Text>
-          ) : (
-            <Text style={styles.timerText}>{timer}</Text>
+          {countdown > 1 && (
+            <Text style={styles.countdownText}>{countdown - 1}</Text>
           )}
+          {countdown === 1 && <Text style={styles.countdownText}>Go!</Text>}
+          {countdown === 0 && <Text style={styles.timerText}>{timer}</Text>}
         </TouchableOpacity>
 
         <View>

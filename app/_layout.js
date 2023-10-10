@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { useFonts } from "expo-font";
 import store from "../store/index";
 import * as SplashScreen from "expo-splash-screen";
+import BackgroundAnimation from "../components/background";
 
 SplashScreen.preventAutoHideAsync();
 
