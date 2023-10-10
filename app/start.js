@@ -28,8 +28,8 @@ export default function Start() {
     dispatch(playersActions.increaseScore(number));
   };
   const startTimerHandler = () => {
-    // router.push("timer");
-    router.push("score");
+    router.push("timer");
+    // router.push("score");
   };
 
   return (
@@ -64,14 +64,11 @@ export default function Start() {
           <Text style={styles.currentScore}>Current Score</Text>
           {players.map(({ number, score }) => (
             <View key={number}>
-              <TouchableOpacity onPress={() => pressHandler(number)}>
-                {/* change this back to image after testing */}
-                <Image
-                  source={PLAYER_IMAGES[number]}
-                  style={styles.playerImage}
-                />
-                <Text style={styles.scoreText}>{score}</Text>
-              </TouchableOpacity>
+              <Image
+                source={PLAYER_IMAGES[number]}
+                style={styles.playerImage}
+              />
+              <Text style={styles.scoreText}>{score}</Text>
             </View>
           ))}
         </View>

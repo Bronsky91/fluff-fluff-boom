@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router, useFocusEffect } from "expo-router";
+import { router } from "expo-router";
 
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
@@ -26,7 +26,15 @@ export default function Score() {
   const pressHandler = (number) => {
     dispatch(playersActions.increaseScore(number));
   };
-
+  const longPressHandler = (number) => {
+    dispatch(playersActions.decreaseScore(number));
+  };
+  const nextRoundHandler = () => {
+    router.push("start");
+  };
+  const resetHandler = () => {
+    dispatch(playersActions.resetScore());
+  };
   return (
     <View style={styles.background}>
       <BackgroundAnimation />
@@ -34,6 +42,7 @@ export default function Score() {
         <View>
           <Text style={styles.headerText}>Score Board</Text>
           <Text style={styles.tapText}>"Tap to add points"</Text>
+          <Text style={styles.tapText}>"Tap and hold to remove a point"</Text>
         </View>
         <View style={styles.scoreContainer}>
           {players.map(({ number, score }) => (
@@ -41,6 +50,7 @@ export default function Score() {
               style={styles.playerButton}
               key={number}
               onPress={() => pressHandler(number)}
+              onLongPress={() => longPressHandler(number)}
             >
               <Image
                 source={PLAYER_IMAGES[number]}
@@ -49,14 +59,19 @@ export default function Score() {
               <Text style={styles.scoreText}>{score}</Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity style={styles.resetButton}>
-            <Text style={styles.resetText}>Reset Points</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <View style={{ width: 70 }}></View>
+          <TouchableOpacity
+            style={styles.nextRoundButton}
+            onPress={nextRoundHandler}
+          >
+            <Text style={styles.buttonText}>Next Round</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.resetButton} onPress={resetHandler}>
+            <Text style={styles.resetButtonText}>Reset Points</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.nextRoundButton}>
-          <Text style={styles.buttonText}>Next Round</Text>
-        </TouchableOpacity>
-
         <Footer />
       </SafeAreaView>
     </View>
@@ -76,11 +91,17 @@ const styles = StyleSheet.create({
   scoreContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "center",
     backgroundColor: "rgba(0, 0, 0, .3)",
     width: screenWidth * 0.95,
     borderColor: "white",
     borderWidth: 4,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: screenWidth * 0.95,
   },
   headerText: {
     fontFamily: "PermanentMarker",
@@ -89,12 +110,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   tapText: {
-    fontFamily: "PermanentMarker",
     fontSize: 18,
     fontStyle: "italic",
     opacity: 0.5,
     color: "white",
     textAlign: "center",
+    marginBottom: 10,
   },
   scoreText: {
     fontFamily: "PermanentMarker",
@@ -106,10 +127,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "white",
   },
+  resetButtonText: {
+    fontWeight: "bold",
+    fontSize: 15,
+    color: "white",
+    textAlign: "center",
+  },
   buttonText: {
-    fontFamily: "PermanentMarker",
+    fontWeight: "bold",
     fontSize: 20,
     color: "#004AAD",
+    textAlign: "center",
   },
   playerImage: {
     width: imageSize,
@@ -123,18 +151,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   resetButton: {
-    width: "33%",
-    height: imageSize,
-    borderColor: "white",
-    borderWidth: 2,
-    borderRadius: 10,
+    height: 60,
+    width: 70,
+    backgroundColor: "rgba(0, 0, 0, .3)",
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
   },
   nextRoundButton: {
-    marginTop: 15,
+    height: 55,
     backgroundColor: "white",
-    borderRadius: 20,
-    paddingHorizontal: 30,
-    paddingVertical: 5,
+    borderRadius: 30,
+    paddingHorizontal: 15,
     justifyContent: "center",
     alignItems: "center",
   },

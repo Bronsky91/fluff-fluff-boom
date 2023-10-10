@@ -35,6 +35,11 @@ const playersSlice = createSlice({
       );
       state.players[playerIndex].score -= 1;
     },
+    resetScore: (state) => {
+      state.players.map((player) => {
+        player.score = 0;
+      });
+    },
   },
 });
 

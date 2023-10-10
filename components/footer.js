@@ -50,8 +50,8 @@ const Footer = () => {
       />
       <TouchableOpacity
         onPress={backButton}
-        style={!router.canGoBack() && { opacity: 0 }}
-        disabled={!router.canGoBack()}
+        style={(!router.canGoBack() || pathName === "/score") && { opacity: 0 }}
+        disabled={!router.canGoBack() || pathName === "/score"}
       >
         <Image
           source={require("../assets/backbutton.png")}
