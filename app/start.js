@@ -1,6 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { PLAYER_IMAGES } from "../constants";
-import { playersActions } from "../store/playersSlice";
 import {
   Text,
   View,
@@ -22,11 +21,7 @@ const imageSize = screenWidth * 0.18;
 
 export default function Start() {
   const players = useSelector((state) => state.players.players);
-  const dispatch = useDispatch();
 
-  const pressHandler = (number) => {
-    dispatch(playersActions.increaseScore(number));
-  };
   const startTimerHandler = () => {
     router.push("timer");
     // router.push("score");

@@ -6,21 +6,36 @@ import {
   Platform,
 } from "react-native";
 import { router, usePathname } from "expo-router";
+import { useSelector } from "react-redux";
 
 const screenWidth = Dimensions.get("window").width;
 const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.09;
 
 const Footer = () => {
+  const players = useSelector((state) => state.players.players);
+  const playersScore = () => {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].score > 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const pathName = usePathname();
+
   const settingsPressHandler = () => {
     router.push("settings");
   };
 
   const backButton = () => {
-    router.back();
+    if (playersScore() && pathName === "/start") {
+      router.push("score");
+    } else {
+      router.back();
+    }
   };
-
-  const pathName = usePathname();
 
   return (
     <View

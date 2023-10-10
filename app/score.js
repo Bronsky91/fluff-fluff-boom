@@ -35,6 +35,8 @@ export default function Score() {
   const resetHandler = () => {
     dispatch(playersActions.resetScore());
   };
+
+  //todo: max score and winning screen
   return (
     <View style={styles.background}>
       <BackgroundAnimation />

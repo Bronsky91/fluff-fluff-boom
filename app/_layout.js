@@ -21,7 +21,7 @@ export default function Layout() {
   if (!fontsLoaded) {
     return null;
   }
-
+  //todo:Background animation in layout
   return (
     <Provider store={store}>
       <Stack initialRouteName="index" onLayout={onLayoutRootView}>
