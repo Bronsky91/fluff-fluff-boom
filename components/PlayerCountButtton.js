@@ -1,14 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, Pressable } from "react-native";
 
 const PlayerCountButton = ({ onPress, disabled, symbol }) => {
   return (
-    <TouchableOpacity
+    <Pressable
+      android_disableSound={true}
       style={[styles.circleButton, disabled && { opacity: 0.3 }]}
       onPress={onPress}
       disabled={disabled}
     >
       <Text style={[styles.shadowText, styles.buttonSymbol]}>{symbol}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 const styles = StyleSheet.create({

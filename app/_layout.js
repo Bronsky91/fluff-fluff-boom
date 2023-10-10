@@ -1,7 +1,8 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Stack } from "expo-router/stack";
 import { Provider } from "react-redux";
 import { useFonts } from "expo-font";
+
 import store from "../store/index";
 import * as SplashScreen from "expo-splash-screen";
 import BackgroundAnimation from "../components/background";
@@ -22,6 +23,7 @@ export default function Layout() {
   if (!fontsLoaded) {
     return null;
   }
+
   //todo:Background animation in layout
   return (
     <Provider store={store}>

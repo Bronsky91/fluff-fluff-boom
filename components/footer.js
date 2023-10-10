@@ -4,16 +4,22 @@ import {
   View,
   TouchableOpacity,
   Platform,
+  Pressable,
 } from "react-native";
+import { useState } from "react";
 import { router, usePathname } from "expo-router";
 import { useSelector } from "react-redux";
+import { Audio } from "expo-av";
 
 const screenWidth = Dimensions.get("window").width;
 const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.09;
 
 const Footer = () => {
+  const [sound, setSound] = useState();
+  const pathName = usePathname();
   const players = useSelector((state) => state.players.players);
+
   const playersScore = () => {
     for (let i = 0; i < players.length; i++) {
       if (players[i].score > 0) {
@@ -23,13 +29,21 @@ const Footer = () => {
     return false;
   };
 
-  const pathName = usePathname();
+  async function playBell() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sfx/bell.wav")
+    );
+    setSound(sound);
 
+    await sound.playAsync();
+  }
   const settingsPressHandler = () => {
+    playBell();
     router.push("settings");
   };
 
   const backButton = () => {
+    playBell();
     if (playersScore() && pathName === "/start") {
       router.push("score");
     } else {
@@ -47,7 +61,8 @@ const Footer = () => {
         marginBottom: Platform.OS === "android" ? 10 : 0,
       }}
     >
-      <TouchableOpacity
+      <Pressable
+        android_disableSound={true}
         onPress={settingsPressHandler}
         style={pathName === "/settings" && { opacity: 0 }}
         disabled={pathName === "/settings"}
@@ -57,13 +72,14 @@ const Footer = () => {
           resizeMode="contain"
           style={{ width: imageSize, height: imageSize }}
         />
-      </TouchableOpacity>
+      </Pressable>
       <Image
         source={require("../assets/FFBLogo.png")}
         resizeMode="contain"
         style={{ width: logoSize, height: logoSize }}
       />
-      <TouchableOpacity
+      <Pressable
+        android_disableSound={true}
         onPress={backButton}
         style={(!router.canGoBack() || pathName === "/score") && { opacity: 0 }}
         disabled={!router.canGoBack() || pathName === "/score"}
@@ -73,7 +89,7 @@ const Footer = () => {
           resizeMode="contain"
           style={{ width: imageSize, height: imageSize }}
         />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

@@ -16,5 +16,4 @@ export const PLAYER_IMAGES = {
   8: require("./assets/Player8.png"),
   9: require("./assets/Player9.png"),
   10: require("./assets/Player10.png"),
-  // TODO: Finish adding the rest of the players
 };

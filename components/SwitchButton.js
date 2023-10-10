@@ -7,6 +7,7 @@ const screenHeight = Dimensions.get("window").height;
 export default function SwitchButton(props) {
   return (
     <Switch
+      android_disableSound={true}
       activeText={"ON"}
       activeTextStyle={styles.switchActive}
       inActiveText={"OFF"}

@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { PLAYER_IMAGES } from "../constants";
 import {
   Text,
   View,
@@ -7,12 +5,17 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { router } from "expo-router";
+import { Audio } from "expo-av";
+import { useState } from "react";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
+import { PLAYER_IMAGES } from "../constants";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -20,11 +23,21 @@ const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.18;
 
 export default function Start() {
+  const [sound, setSound] = useState();
   const players = useSelector((state) => state.players.players);
 
+  async function playCowbell() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sfx/cowbell.wav")
+    );
+    setSound(sound);
+
+    await sound.playAsync();
+  }
+
   const startTimerHandler = () => {
+    playCowbell();
     router.push("timer");
-    // router.push("score");
   };
 
   return (
@@ -36,7 +49,8 @@ export default function Start() {
           resizeMode="contain"
           style={{ width: logoSize, height: logoSize }}
         />
-        <TouchableOpacity
+        <Pressable
+          android_disableSound={true}
           onPress={startTimerHandler}
           style={{
             height: screenHeight * 0.4,
@@ -54,7 +68,7 @@ export default function Start() {
             style={styles.touchIcon}
           ></Image>
           <Text style={[styles.shadowText, styles.headerText]}>TIMER</Text>
-        </TouchableOpacity>
+        </Pressable>
         <View style={styles.imageContainer}>
           <Text style={styles.currentScore}>Current Score</Text>
           {players.map(({ number, score }) => (
@@ -115,7 +129,6 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   imageContainer: {
-    flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
@@ -123,8 +136,6 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 20,
     margin: 10,
-    paddingBottom: 100,
-    maxHeight: imageSize * 2.5,
   },
   scoreText: {
     position: "absolute",

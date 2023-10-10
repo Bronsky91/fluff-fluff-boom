@@ -7,12 +7,15 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router, useFocusEffect } from "expo-router";
+import { Audio } from "expo-av";
+
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
-import { router, useFocusEffect } from "expo-router";
 import { playersActions } from "../store/playersSlice";
 
 const screenWidth = Dimensions.get("window").width;
@@ -22,9 +25,27 @@ const logoSize = screenWidth * 0.15;
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
 
-export default function App() {
+export default function App(props) {
   const [playerCount, setPlayerCount] = useState(2);
+  const [sound, setSound] = useState();
   const dispatch = useDispatch();
+
+  async function playBell() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sfx/bell.wav")
+    );
+    setSound(sound);
+
+    await sound.playAsync();
+  }
+  async function playCowbell() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sfx/cowbell.wav")
+    );
+    setSound(sound);
+
+    await sound.playAsync();
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -34,6 +55,7 @@ export default function App() {
   );
 
   const onStartPress = () => {
+    playCowbell();
     for (let i = 2; i < playerCount; i++) {
       dispatch(playersActions.addPlayer());
     }
@@ -44,6 +66,7 @@ export default function App() {
   const incrementDisabled = playerCount === MAX_PLAYER_COUNT;
 
   const changePlayerCount = (change) => {
+    playBell();
     setPlayerCount((pc) => pc + change);
   };
 
@@ -87,9 +110,13 @@ export default function App() {
               symbol="+"
             />
           </View>
-          <TouchableOpacity style={styles.startButton} onPress={onStartPress}>
+          <Pressable
+            android_disableSound={true}
+            style={styles.startButton}
+            onPress={onStartPress}
+          >
             <Text style={styles.buttonText}>Start Game</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <Footer />
       </SafeAreaView>

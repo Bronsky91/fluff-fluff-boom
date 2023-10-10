@@ -2,6 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Text, View, StyleSheet, Dimensions, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SplashScreen from "expo-splash-screen";
+import { Audio } from "expo-av";
+import { useState } from "react";
+
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import { settingsActions } from "../store/settingsSlice";
@@ -13,28 +16,44 @@ SplashScreen.preventAutoHideAsync();
 const screenWidth = Dimensions.get("window").width;
 
 export default function Settings() {
+  const [sound, setSound] = useState();
   const dispatch = useDispatch();
   const sfxValue = useSelector((state) => state.settings.soundEffects);
   const musicValue = useSelector((state) => state.settings.music);
   const timerSoundValue = useSelector((state) => state.settings.timerSound);
   const announcerValue = useSelector((state) => state.settings.announcer);
 
+  async function playBell() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sfx/bell.wav")
+    );
+    setSound(sound);
+
+    await sound.playAsync();
+  }
+
   const soundEffectsToggle = () => {
+    playBell();
     dispatch(settingsActions.toggleSoundEffects());
   };
   const musicToggle = () => {
+    playBell();
     dispatch(settingsActions.toggleMusic());
   };
   const timerSoundToggle = () => {
+    playBell();
     dispatch(settingsActions.toggleTimerSound());
   };
   const announcerToggle = () => {
+    playBell();
     dispatch(settingsActions.toggleAnnouncer());
   };
   const videoPressHandler = () => {
+    playBell();
     Linking.openURL("https://www.youtube.com/watch?v=1gZCTsUQZcs");
   };
   const rulebookPressHandler = () => {
+    playBell();
     Linking.openURL(
       "https://www.playagaingamesofficial.com/fluff-fluff-boom#pdf"
     );

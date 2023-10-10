@@ -23,7 +23,7 @@ export default function Winner() {
   const winner = players.find((player) => player.score === 15);
 
   const newGameHandler = () => {
-    router.replace("index");
+    router.replace("/");
   };
 
   return (
