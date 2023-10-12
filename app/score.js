@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
 import {
   Text,
   View,
@@ -7,7 +6,10 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
+  Pressable,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
@@ -15,6 +17,8 @@ import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import { PLAYER_IMAGES } from "../constants";
 import { playersActions } from "../store/playersSlice";
+import { bellAudio, cowbellAudio } from "../utils/soundeffects";
+import { announcerSounds } from "../utils/announcer";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -24,8 +28,15 @@ const MIN_SCORE = 0;
 const MAX_SCORE = 14;
 
 export default function Score() {
+  useEffect(() => {
+    setTimeout(() => {
+      playPoints();
+    }, 2000);
+  }, []);
+
   const players = useSelector((state) => state.players.players);
   const dispatch = useDispatch();
+
   const decreaseDisabled = (score) => {
     return score <= MIN_SCORE;
   };
@@ -33,16 +44,41 @@ export default function Score() {
     return score >= MAX_SCORE;
   };
 
+  const playBell = async () => {
+    try {
+      await bellAudio.replayAsync();
+    } catch (error) {
+      console.error("Error playing the bell audio:", error);
+    }
+  };
+  const playCowbell = async () => {
+    try {
+      await cowbellAudio.replayAsync();
+    } catch (error) {
+      console.error("Error playing the cowbell audio:", error);
+    }
+  };
+  const playPoints = async () => {
+    try {
+      await announcerSounds.A18.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const pressHandler = (number) => {
+    playBell();
     dispatch(playersActions.increaseScore(number));
   };
   const longPressHandler = (number) => {
     dispatch(playersActions.decreaseScore(number));
   };
   const nextRoundHandler = () => {
+    playCowbell();
     router.push("start");
   };
   const resetHandler = () => {
+    playCowbell();
     dispatch(playersActions.resetScore());
   };
   const winAlert = (number) => {
@@ -73,7 +109,8 @@ export default function Score() {
         </View>
         <View style={styles.scoreContainer}>
           {players.map(({ number, score }) => (
-            <TouchableOpacity
+            <Pressable
+              android_disableSound={true}
               style={styles.playerButton}
               key={number}
               onPress={() => {
@@ -90,20 +127,25 @@ export default function Score() {
                 style={styles.playerImage}
               />
               <Text style={styles.scoreText}>{score}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
         <View style={styles.buttonContainer}>
           <View style={{ width: 70 }}></View>
-          <TouchableOpacity
+          <Pressable
+            android_disableSound={true}
             style={styles.nextRoundButton}
             onPress={nextRoundHandler}
           >
             <Text style={styles.buttonText}>Next Round</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.resetButton} onPress={resetHandler}>
+          </Pressable>
+          <Pressable
+            android_disableSound={true}
+            style={styles.resetButton}
+            onPress={resetHandler}
+          >
             <Text style={styles.resetButtonText}>Reset Points</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <Footer />
       </SafeAreaView>

@@ -1,15 +1,23 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Stack } from "expo-router/stack";
 import { Provider } from "react-redux";
 import { useFonts } from "expo-font";
 
 import store from "../store/index";
 import * as SplashScreen from "expo-splash-screen";
-import BackgroundAnimation from "../components/background";
+import { loadSoundEffects } from "../utils/soundeffects";
+import { loadAnnouncer } from "../utils/announcer";
+import { loadMusic } from "../utils/music";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
+  useEffect(() => {
+    loadSoundEffects();
+    loadAnnouncer();
+    loadMusic();
+  }, []);
+
   const [fontsLoaded] = useFonts({
     PermanentMarker: require("../assets/PermanentMarker-Regular.ttf"),
   });

@@ -4,18 +4,18 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  TouchableOpacity,
   Pressable,
 } from "react-native";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { router } from "expo-router";
-import { Audio } from "expo-av";
-import { useState } from "react";
-
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import { PLAYER_IMAGES } from "../constants";
+import { cowbellAudio } from "../utils/soundeffects";
+import { announcerSounds } from "../utils/announcer";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -23,17 +23,28 @@ const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.18;
 
 export default function Start() {
-  const [sound, setSound] = useState();
   const players = useSelector((state) => state.players.players);
 
-  async function playCowbell() {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sfx/cowbell.wav")
-    );
-    setSound(sound);
+  useEffect(() => {
+    setTimeout(() => {
+      playPressStart();
+    }, 3000);
+  }, []);
 
-    await sound.playAsync();
-  }
+  const playCowbell = async () => {
+    try {
+      await cowbellAudio.replayAsync();
+    } catch (error) {
+      console.error("Error playing the cowbell audio:", error);
+    }
+  };
+  const playPressStart = async () => {
+    try {
+      await announcerSounds.A20.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const startTimerHandler = () => {
     playCowbell();

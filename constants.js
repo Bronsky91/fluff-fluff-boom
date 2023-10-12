@@ -17,3 +17,27 @@ export const PLAYER_IMAGES = {
   9: require("./assets/Player9.png"),
   10: require("./assets/Player10.png"),
 };
+
+export const ANNOUNCER_FILES = {
+  A1: require("./assets/voiceover/A1.mp3"),
+  A2: require("./assets/voiceover/A2.mp3"),
+  A3: require("./assets/voiceover/A3.mp3"),
+  A4: require("./assets/voiceover/A4.mp3"),
+  A5: require("./assets/voiceover/A5.mp3"),
+  A6: require("./assets/voiceover/A6.mp3"),
+  A7: require("./assets/voiceover/A7.mp3"),
+  A8: require("./assets/voiceover/A8.mp3"),
+  A9: require("./assets/voiceover/A9.mp3"),
+  A10: require("./assets/voiceover/A10.mp3"),
+  A11: require("./assets/voiceover/A11.mp3"),
+  A12: require("./assets/voiceover/A12.mp3"),
+  A13: require("./assets/voiceover/A13.mp3"),
+  A14: require("./assets/voiceover/A14.mp3"),
+  A15: require("./assets/voiceover/A15.mp3"),
+  A16: require("./assets/voiceover/A16.mp3"),
+  A17: require("./assets/voiceover/A17.mp3"),
+  A18: require("./assets/voiceover/A18.mp3"),
+  A19: require("./assets/voiceover/A19.mp3"),
+  A20: require("./assets/voiceover/A20.mp3"),
+  A21: require("./assets/voiceover/A21.mp3"),
+};

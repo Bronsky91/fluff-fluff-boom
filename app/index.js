@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   Text,
@@ -6,17 +6,17 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  TouchableOpacity,
   Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useFocusEffect } from "expo-router";
-import { Audio } from "expo-av";
 
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
 import { playersActions } from "../store/playersSlice";
+import { bellAudio, cowbellAudio } from "../utils/soundeffects";
+import { gameStart, announcerSounds } from "../utils/announcer";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -25,27 +25,37 @@ const logoSize = screenWidth * 0.15;
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
 
-export default function App(props) {
+export default function App() {
   const [playerCount, setPlayerCount] = useState(2);
-  const [sound, setSound] = useState();
   const dispatch = useDispatch();
 
-  async function playBell() {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sfx/bell.wav")
-    );
-    setSound(sound);
+  useEffect(() => {
+    setTimeout(() => {
+      playStart();
+    }, 1000);
+  }, []);
 
-    await sound.playAsync();
-  }
-  async function playCowbell() {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sfx/cowbell.wav")
-    );
-    setSound(sound);
-
-    await sound.playAsync();
-  }
+  const playBell = async () => {
+    try {
+      await bellAudio.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const playCowbell = async () => {
+    try {
+      await cowbellAudio.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const playStart = async () => {
+    try {
+      await announcerSounds.A19.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -55,6 +65,8 @@ export default function App(props) {
   );
 
   const onStartPress = () => {
+    const random6 = Math.floor(Math.random() * 6);
+    gameStart[random6]();
     playCowbell();
     for (let i = 2; i < playerCount; i++) {
       dispatch(playersActions.addPlayer());

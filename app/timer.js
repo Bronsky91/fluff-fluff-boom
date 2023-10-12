@@ -12,6 +12,8 @@ import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BackgroundAnimation from "../components/background";
+import { announcerSounds, lessThanFive, flip } from "../utils/announcer";
+import { bombAudio } from "../utils/soundeffects";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -24,7 +26,23 @@ export default function Timer() {
   const [countdown, setCountdown] = useState(4);
   const [timer, setTimer] = useState(15);
 
+  const playCountdown = async () => {
+    try {
+      await announcerSounds.A11.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const playBomb = async () => {
+    try {
+      await bombAudio.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
+    playCountdown();
     countdownIntervalRef.current = setInterval(() => {
       setCountdown((prevState) => prevState - 1);
     }, 1000);
@@ -42,7 +60,15 @@ export default function Timer() {
   }, [countdown]);
 
   useEffect(() => {
+    const random5 = Math.floor(Math.random() * 5);
+    if (timer === 5) {
+      lessThanFive[random5]();
+    }
+  }, [timer]);
+
+  useEffect(() => {
     if (timer === 0) {
+      playBomb();
       clearInterval(timerIntervalRef.current);
       router.push("score");
     }
@@ -50,6 +76,8 @@ export default function Timer() {
 
   const flipTimerHandler = () => {
     if (timer !== 15) {
+      const random4 = Math.floor(Math.random() * 4);
+      flip[random4]();
       setTimer(Math.abs(timer - 15));
     }
   };

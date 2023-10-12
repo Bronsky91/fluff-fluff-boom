@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BackgroundAnimation from "../components/background";
 import { PLAYER_IMAGES } from "../constants";
 import Footer from "../components/footer";
+import { announcerSounds } from "../utils/announcer";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -21,6 +23,20 @@ const imageSize = screenHeight * 0.4;
 export default function Winner() {
   const players = useSelector((state) => state.players.players);
   const winner = players.find((player) => player.score === 15);
+
+  useEffect(() => {
+    setTimeout(() => {
+      playWinner();
+    }, 500);
+  }, []);
+
+  const playWinner = async () => {
+    try {
+      await announcerSounds.A21.replayAsync();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const newGameHandler = () => {
     router.replace("/");
