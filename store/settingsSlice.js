@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialSettingsState = {
-  soundEffects: false,
-  music: false,
-  timerSound: false,
-  announcer: false,
+  soundEffects: true,
+  music: true,
+  timerSound: true,
+  announcer: true,
 };
 
 const settingsSlice = createSlice({

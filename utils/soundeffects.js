@@ -1,8 +1,10 @@
 import { Audio } from "expo-av";
 
-export const bellAudio = new Audio.Sound();
-export const cowbellAudio = new Audio.Sound();
-export const bombAudio = new Audio.Sound();
+export const soundEffectsObj = {
+  Bell: (bellAudio = new Audio.Sound()),
+  Cowbell: (cowbellAudio = new Audio.Sound()),
+  Bomb: (bombAudio = new Audio.Sound()),
+};
 
 export async function loadSoundEffects() {
   try {

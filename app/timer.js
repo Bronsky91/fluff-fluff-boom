@@ -8,12 +8,14 @@ import {
 
 import { useEffect, useState, useRef } from "react";
 import { router } from "expo-router";
+import { useSelector } from "react-redux";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BackgroundAnimation from "../components/background";
 import { announcerSounds, lessThanFive, flip } from "../utils/announcer";
-import { bombAudio } from "../utils/soundeffects";
+import playSound from "../utils/playsound";
+import { soundEffectsObj } from "../utils/soundeffects";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -25,24 +27,11 @@ export default function Timer() {
   const countdownIntervalRef = useRef(0);
   const [countdown, setCountdown] = useState(4);
   const [timer, setTimer] = useState(15);
-
-  const playCountdown = async () => {
-    try {
-      await announcerSounds.A11.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const playBomb = async () => {
-    try {
-      await bombAudio.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const soundEffects = useSelector((state) => state.settings.soundEffects);
+  const announcer = useSelector((state) => state.settings.announcer);
 
   useEffect(() => {
-    playCountdown();
+    playSound(announcerSounds.A11, announcer);
     countdownIntervalRef.current = setInterval(() => {
       setCountdown((prevState) => prevState - 1);
     }, 1000);
@@ -62,13 +51,13 @@ export default function Timer() {
   useEffect(() => {
     const random5 = Math.floor(Math.random() * 5);
     if (timer === 5) {
-      lessThanFive[random5]();
+      playSound(announcerSounds[lessThanFive[random5]], announcer);
     }
   }, [timer]);
 
   useEffect(() => {
     if (timer === 0) {
-      playBomb();
+      playSound(soundEffectsObj.Bomb, soundEffects);
       clearInterval(timerIntervalRef.current);
       router.push("score");
     }
@@ -77,7 +66,7 @@ export default function Timer() {
   const flipTimerHandler = () => {
     if (timer !== 15) {
       const random4 = Math.floor(Math.random() * 4);
-      flip[random4]();
+      playSound(announcerSounds[flip[random4]], announcer);
       setTimer(Math.abs(timer - 15));
     }
   };

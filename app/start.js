@@ -14,8 +14,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import { PLAYER_IMAGES } from "../constants";
-import { cowbellAudio } from "../utils/soundeffects";
-import { announcerSounds } from "../utils/announcer";
+import { soundEffectsObj } from "../utils/soundeffects";
+import { gameStart, announcerSounds } from "../utils/announcer";
+import playSound from "../utils/playsound";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -24,30 +25,16 @@ const imageSize = screenWidth * 0.18;
 
 export default function Start() {
   const players = useSelector((state) => state.players.players);
+  const soundEffects = useSelector((state) => state.settings.soundEffects);
+  const announcer = useSelector((state) => state.settings.announcer);
 
   useEffect(() => {
-    setTimeout(() => {
-      playPressStart();
-    }, 3000);
+    const random6 = Math.floor(Math.random() * 6);
+    playSound(announcerSounds[gameStart[random6]], announcer);
   }, []);
 
-  const playCowbell = async () => {
-    try {
-      await cowbellAudio.replayAsync();
-    } catch (error) {
-      console.error("Error playing the cowbell audio:", error);
-    }
-  };
-  const playPressStart = async () => {
-    try {
-      await announcerSounds.A20.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const startTimerHandler = () => {
-    playCowbell();
+    playSound(soundEffectsObj.Cowbell, soundEffects);
     router.push("timer");
   };
 

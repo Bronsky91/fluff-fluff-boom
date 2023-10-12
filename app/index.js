@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Text,
   View,
@@ -15,8 +15,9 @@ import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
 import { playersActions } from "../store/playersSlice";
-import { bellAudio, cowbellAudio } from "../utils/soundeffects";
-import { gameStart, announcerSounds } from "../utils/announcer";
+import { soundEffectsObj } from "../utils/soundeffects";
+import playSound from "../utils/playsound";
+// import { announcerSounds } from "../utils/announcer";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -28,46 +29,26 @@ const MAX_PLAYER_COUNT = 10;
 export default function App() {
   const [playerCount, setPlayerCount] = useState(2);
   const dispatch = useDispatch();
+  const soundEffects = useSelector((state) => state.settings.soundEffects);
 
-  useEffect(() => {
-    setTimeout(() => {
-      playStart();
-    }, 1000);
-  }, []);
-
-  const playBell = async () => {
-    try {
-      await bellAudio.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const playCowbell = async () => {
-    try {
-      await cowbellAudio.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const playStart = async () => {
-    try {
-      await announcerSounds.A19.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const playStart = async () => {
+  //   try {
+  //     await announcerSounds.A19.replayAsync();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useFocusEffect(
     useCallback(() => {
+      // playStart();
       dispatch(playersActions.nukePlayers());
       setPlayerCount(2);
     }, [])
   );
 
   const onStartPress = () => {
-    const random6 = Math.floor(Math.random() * 6);
-    gameStart[random6]();
-    playCowbell();
+    playSound(soundEffectsObj.Cowbell, soundEffects);
     for (let i = 2; i < playerCount; i++) {
       dispatch(playersActions.addPlayer());
     }
@@ -78,7 +59,7 @@ export default function App() {
   const incrementDisabled = playerCount === MAX_PLAYER_COUNT;
 
   const changePlayerCount = (change) => {
-    playBell();
+    playSound(soundEffectsObj.Bell, soundEffects);
     setPlayerCount((pc) => pc + change);
   };
 

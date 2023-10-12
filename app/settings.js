@@ -8,7 +8,8 @@ import Footer from "../components/footer";
 import { settingsActions } from "../store/settingsSlice";
 import SettingsItem from "../components/SettingsItem";
 import ButtonLink from "../components/ButtonLink";
-import { bellAudio } from "../utils/soundeffects";
+import { soundEffectsObj } from "../utils/soundeffects";
+import playSound from "../utils/playsound";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,36 +22,28 @@ export default function Settings() {
   const timerSoundValue = useSelector((state) => state.settings.timerSound);
   const announcerValue = useSelector((state) => state.settings.announcer);
 
-  const playBell = async () => {
-    try {
-      await bellAudio.replayAsync();
-    } catch (error) {
-      console.error("Error playing the bell audio:", error);
-    }
-  };
-
   const soundEffectsToggle = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, sfxValue);
     dispatch(settingsActions.toggleSoundEffects());
   };
   const musicToggle = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, sfxValue);
     dispatch(settingsActions.toggleMusic());
   };
   const timerSoundToggle = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, sfxValue);
     dispatch(settingsActions.toggleTimerSound());
   };
   const announcerToggle = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, sfxValue);
     dispatch(settingsActions.toggleAnnouncer());
   };
   const videoPressHandler = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, sfxValue);
     Linking.openURL("https://www.youtube.com/watch?v=1gZCTsUQZcs");
   };
   const rulebookPressHandler = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, sfxValue);
     Linking.openURL(
       "https://www.playagaingamesofficial.com/fluff-fluff-boom#pdf"
     );

@@ -5,6 +5,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -15,30 +16,26 @@ import BackgroundAnimation from "../components/background";
 import { PLAYER_IMAGES } from "../constants";
 import Footer from "../components/footer";
 import { announcerSounds } from "../utils/announcer";
+import { soundEffectsObj } from "../utils/soundeffects";
+import playSound from "../utils/playsound";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const imageSize = screenHeight * 0.4;
 
 export default function Winner() {
-  const players = useSelector((state) => state.players.players);
+  const { players } = useSelector((state) => state.players);
+  const { soundEffects, announcer } = useSelector((state) => state.settings);
   const winner = players.find((player) => player.score === 15);
 
   useEffect(() => {
     setTimeout(() => {
-      playWinner();
+      playSound(announcerSounds.A21, announcer);
     }, 500);
   }, []);
 
-  const playWinner = async () => {
-    try {
-      await announcerSounds.A21.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const newGameHandler = () => {
+    playSound(soundEffectsObj.Cowbell, soundEffects);
     router.replace("/");
   };
 
@@ -53,9 +50,13 @@ export default function Winner() {
           source={PLAYER_IMAGES[winner.number]}
           style={styles.winnerImage}
         />
-        <TouchableOpacity style={styles.button} onPress={newGameHandler}>
+        <Pressable
+          android_disableSound={true}
+          style={styles.button}
+          onPress={newGameHandler}
+        >
           <Text style={styles.buttonText}>New Game</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         <Footer />
       </SafeAreaView>

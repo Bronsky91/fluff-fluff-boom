@@ -1,24 +1,19 @@
-import {
-  Dimensions,
-  Image,
-  View,
-  TouchableOpacity,
-  Platform,
-  Pressable,
-} from "react-native";
-import { useState } from "react";
-import { router, usePathname } from "expo-router";
+import { Dimensions, Image, View, Platform, Pressable } from "react-native";
 import { useSelector } from "react-redux";
-import { Audio } from "expo-av";
+
+import { router, usePathname } from "expo-router";
+
+import { soundEffectsObj } from "../utils/soundeffects";
+import playSound from "../utils/playsound";
 
 const screenWidth = Dimensions.get("window").width;
 const logoSize = screenWidth * 0.15;
 const imageSize = screenWidth * 0.09;
 
 const Footer = () => {
-  const [sound, setSound] = useState();
   const pathName = usePathname();
   const players = useSelector((state) => state.players.players);
+  const soundEffects = useSelector((state) => state.settings.soundEffects);
 
   const playersScore = () => {
     for (let i = 0; i < players.length; i++) {
@@ -29,21 +24,13 @@ const Footer = () => {
     return false;
   };
 
-  async function playBell() {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sfx/bell.wav")
-    );
-    setSound(sound);
-
-    await sound.playAsync();
-  }
   const settingsPressHandler = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, soundEffects);
     router.push("settings");
   };
 
   const backButton = () => {
-    playBell();
+    playSound(soundEffectsObj.Bell, soundEffects);
     if (playersScore() && pathName === "/start") {
       router.push("score");
     } else {

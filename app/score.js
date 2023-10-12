@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  TouchableOpacity,
   Alert,
   Pressable,
 } from "react-native";
@@ -17,8 +16,9 @@ import BackgroundAnimation from "../components/background";
 import Footer from "../components/footer";
 import { PLAYER_IMAGES } from "../constants";
 import { playersActions } from "../store/playersSlice";
-import { bellAudio, cowbellAudio } from "../utils/soundeffects";
+import { soundEffectsObj } from "../utils/soundeffects";
 import { announcerSounds } from "../utils/announcer";
+import playSound from "../utils/playsound";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -30,11 +30,13 @@ const MAX_SCORE = 14;
 export default function Score() {
   useEffect(() => {
     setTimeout(() => {
-      playPoints();
-    }, 2000);
+      playSound(announcerSounds.A18, announcer);
+    }, 3000);
   }, []);
 
-  const players = useSelector((state) => state.players.players);
+  const { players } = useSelector((state) => state.players);
+  const { soundEffects, announcer } = useSelector((state) => state.settings);
+
   const dispatch = useDispatch();
 
   const decreaseDisabled = (score) => {
@@ -44,41 +46,19 @@ export default function Score() {
     return score >= MAX_SCORE;
   };
 
-  const playBell = async () => {
-    try {
-      await bellAudio.replayAsync();
-    } catch (error) {
-      console.error("Error playing the bell audio:", error);
-    }
-  };
-  const playCowbell = async () => {
-    try {
-      await cowbellAudio.replayAsync();
-    } catch (error) {
-      console.error("Error playing the cowbell audio:", error);
-    }
-  };
-  const playPoints = async () => {
-    try {
-      await announcerSounds.A18.replayAsync();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const pressHandler = (number) => {
-    playBell();
+    playSound(soundEffectsObj.Bell, soundEffects);
     dispatch(playersActions.increaseScore(number));
   };
   const longPressHandler = (number) => {
     dispatch(playersActions.decreaseScore(number));
   };
   const nextRoundHandler = () => {
-    playCowbell();
+    playSound(soundEffectsObj.Cowbell, soundEffects);
     router.push("start");
   };
   const resetHandler = () => {
-    playCowbell();
+    playSound(soundEffectsObj.Cowbell, soundEffects);
     dispatch(playersActions.resetScore());
   };
   const winAlert = (number) => {
