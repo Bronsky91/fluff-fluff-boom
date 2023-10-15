@@ -5,10 +5,11 @@ import {
   Image,
   Dimensions,
   Alert,
+  Modal,
   Pressable,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
@@ -28,15 +29,10 @@ const MIN_SCORE = 0;
 const MAX_SCORE = 14;
 
 export default function Score() {
-  useEffect(() => {
-    setTimeout(() => {
-      playSound(announcerSounds.A18, announcer);
-    }, 3000);
-  }, []);
-
   const { players } = useSelector((state) => state.players);
   const { soundEffects, announcer } = useSelector((state) => state.settings);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const winner = players.find((player) => player.score === 15);
   const dispatch = useDispatch();
 
   const decreaseDisabled = (score) => {
@@ -45,6 +41,16 @@ export default function Score() {
   const increaseDisabled = (score) => {
     return score >= MAX_SCORE;
   };
+
+  useEffect(() => {
+    const stopTimer = async () => {
+      await soundEffectsObj.ClockTick.stopAsync();
+    };
+    stopTimer();
+    setTimeout(() => {
+      playSound(announcerSounds.A18, announcer);
+    }, 3000);
+  }, []);
 
   const pressHandler = (number) => {
     playSound(soundEffectsObj.Bell, soundEffects);
@@ -61,21 +67,21 @@ export default function Score() {
     playSound(soundEffectsObj.Cowbell, soundEffects);
     dispatch(playersActions.resetScore());
   };
-  const winAlert = (number) => {
-    Alert.alert("Winner!", "This will end the game, are you sure?", [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: () => {
-          dispatch(playersActions.increaseScore(number));
-          router.push("winner");
-        },
-      },
-    ]);
+
+  const winModal = (number) => {
+    dispatch(playersActions.increaseScore(number));
+    setModalVisible(!modalVisible);
+  };
+
+  const noHandler = () => {
+    const number = winner.number;
+    dispatch(playersActions.decreaseScore(number));
+    setModalVisible(!modalVisible);
+  };
+
+  const winnerHandler = () => {
+    setModalVisible(!modalVisible);
+    router.push("winner");
   };
 
   return (
@@ -87,7 +93,27 @@ export default function Score() {
           <Text style={styles.tapText}>"Tap to add points"</Text>
           <Text style={styles.tapText}>"Tap and hold to remove a point"</Text>
         </View>
+
         <View style={styles.scoreContainer}>
+          <Modal transparent={true} visible={modalVisible}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.headerText}>Winner!</Text>
+              <Text style={styles.modalText}>
+                This will end the game, are you sure?
+              </Text>
+              <View style={styles.modalButtonRow}>
+                <Pressable style={styles.modalNoButton} onPress={noHandler}>
+                  <Text style={styles.resetButtonText}>No</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.modalYesButton}
+                  onPress={winnerHandler}
+                >
+                  <Text style={styles.resetButtonText}>Yes</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
           {players.map(({ number, score }) => (
             <Pressable
               android_disableSound={true}
@@ -96,7 +122,7 @@ export default function Score() {
               onPress={() => {
                 !increaseDisabled(score)
                   ? pressHandler(number)
-                  : winAlert(number);
+                  : winModal(number);
               }}
               onLongPress={() => {
                 !decreaseDisabled(score) && longPressHandler(number);
@@ -158,6 +184,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: screenWidth * 0.95,
   },
+  modalContainer: {
+    marginTop: screenHeight * 0.35,
+    height: screenHeight * 0.25,
+    backgroundColor: "rgba(0, 0, 0, .7)",
+    borderRadius: 20,
+    padding: 15,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  modalButtonRow: {
+    width: screenWidth * 0.8,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
   headerText: {
     fontFamily: "PermanentMarker",
     fontSize: 40,
@@ -168,6 +209,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontStyle: "italic",
     opacity: 0.5,
+    color: "white",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 18,
+    fontStyle: "italic",
     color: "white",
     textAlign: "center",
     marginBottom: 10,
@@ -216,6 +264,24 @@ const styles = StyleSheet.create({
   nextRoundButton: {
     height: 55,
     backgroundColor: "white",
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalNoButton: {
+    height: 35,
+    width: screenWidth * 0.3,
+    backgroundColor: "#7CABD6",
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalYesButton: {
+    height: 35,
+    width: screenWidth * 0.3,
+    backgroundColor: "#FF5757",
     borderRadius: 30,
     paddingHorizontal: 15,
     justifyContent: "center",

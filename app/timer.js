@@ -1,10 +1,4 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, Dimensions, Pressable } from "react-native";
 
 import { useEffect, useState, useRef } from "react";
 import { router } from "expo-router";
@@ -27,8 +21,9 @@ export default function Timer() {
   const countdownIntervalRef = useRef(0);
   const [countdown, setCountdown] = useState(4);
   const [timer, setTimer] = useState(15);
-  const soundEffects = useSelector((state) => state.settings.soundEffects);
-  const announcer = useSelector((state) => state.settings.announcer);
+  const { soundEffects, announcer, timerSound } = useSelector(
+    (state) => state.settings
+  );
 
   useEffect(() => {
     playSound(announcerSounds.A11, announcer);
@@ -40,6 +35,7 @@ export default function Timer() {
 
   useEffect(() => {
     if (countdown === 0) {
+      playSound(soundEffectsObj.ClockTick, timerSound);
       clearInterval(countdownIntervalRef.current);
       timerIntervalRef.current = setInterval(() => {
         setTimer((prevState) => prevState - 1);
@@ -79,13 +75,17 @@ export default function Timer() {
     >
       <BackgroundAnimation />
       <SafeAreaView style={styles.container}>
-        <TouchableOpacity onPress={flipTimerHandler} style={styles.button}>
+        <Pressable
+          android_disableSound={true}
+          onPress={flipTimerHandler}
+          style={styles.button}
+        >
           {countdown > 1 && (
             <Text style={styles.countdownText}>{countdown - 1}</Text>
           )}
           {countdown === 1 && <Text style={styles.countdownText}>Go!</Text>}
           {countdown === 0 && <Text style={styles.timerText}>{timer}</Text>}
-        </TouchableOpacity>
+        </Pressable>
 
         <View>
           <Text style={styles.flipText}>Tap to flip</Text>
