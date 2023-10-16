@@ -1,10 +1,14 @@
 import { Audio } from "expo-av";
 
-export const loop1 = new Audio.Sound();
-export const loop2 = new Audio.Sound();
-export const loop3 = new Audio.Sound();
-export const loop4 = new Audio.Sound();
-export const backgroundMusic = new Audio.Sound();
+export const musicObj = {
+  loop1: (loop1 = new Audio.Sound()),
+  loop2: (loop2 = new Audio.Sound()),
+  loop3: (loop3 = new Audio.Sound()),
+  loop4: (loop4 = new Audio.Sound()),
+  backgroundMusic: (backgroundMusic = new Audio.Sound()),
+};
+
+export const timerMusic = ["loop1", "loop2", "loop3", "loop4"];
 
 export async function loadMusic() {
   try {

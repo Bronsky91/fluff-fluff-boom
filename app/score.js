@@ -32,6 +32,7 @@ export default function Score() {
   const { players } = useSelector((state) => state.players);
   const { soundEffects, announcer } = useSelector((state) => state.settings);
   const [modalVisible, setModalVisible] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const winner = players.find((player) => player.score === 15);
   const dispatch = useDispatch();
 
@@ -43,10 +44,6 @@ export default function Score() {
   };
 
   useEffect(() => {
-    const stopTimer = async () => {
-      await soundEffectsObj.ClockTick.stopAsync();
-    };
-    stopTimer();
     setTimeout(() => {
       playSound(announcerSounds.A18, announcer);
     }, 3000);
@@ -69,17 +66,22 @@ export default function Score() {
   };
 
   const winModal = (number) => {
+    playSound(soundEffectsObj.Bell, soundEffects);
     dispatch(playersActions.increaseScore(number));
     setModalVisible(!modalVisible);
+    setButtonDisabled(true);
   };
 
   const noHandler = () => {
     const number = winner.number;
+    playSound(soundEffectsObj.Cowbell, soundEffects);
     dispatch(playersActions.decreaseScore(number));
     setModalVisible(!modalVisible);
+    setButtonDisabled(false);
   };
 
   const winnerHandler = () => {
+    playSound(soundEffectsObj.Cowbell, soundEffects);
     setModalVisible(!modalVisible);
     router.push("winner");
   };
@@ -102,10 +104,15 @@ export default function Score() {
                 This will end the game, are you sure?
               </Text>
               <View style={styles.modalButtonRow}>
-                <Pressable style={styles.modalNoButton} onPress={noHandler}>
+                <Pressable
+                  android_disableSound={true}
+                  style={styles.modalNoButton}
+                  onPress={noHandler}
+                >
                   <Text style={styles.resetButtonText}>No</Text>
                 </Pressable>
                 <Pressable
+                  android_disableSound={true}
                   style={styles.modalYesButton}
                   onPress={winnerHandler}
                 >
@@ -119,6 +126,7 @@ export default function Score() {
               android_disableSound={true}
               style={styles.playerButton}
               key={number}
+              disabled={buttonDisabled}
               onPress={() => {
                 !increaseDisabled(score)
                   ? pressHandler(number)

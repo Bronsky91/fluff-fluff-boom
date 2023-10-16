@@ -16,7 +16,9 @@ import Footer from "../components/footer";
 import PlayerCountButton from "../components/PlayerCountButtton";
 import { playersActions } from "../store/playersSlice";
 import { soundEffectsObj } from "../utils/soundeffects";
+import { musicObj } from "../utils/music";
 import playSound from "../utils/playsound";
+import loopSound from "../utils/loopsound";
 // import { announcerSounds } from "../utils/announcer";
 
 const screenWidth = Dimensions.get("window").width;
@@ -29,19 +31,19 @@ const MAX_PLAYER_COUNT = 10;
 export default function App() {
   const [playerCount, setPlayerCount] = useState(2);
   const dispatch = useDispatch();
-  const soundEffects = useSelector((state) => state.settings.soundEffects);
+  const { soundEffects, music, announcer } = useSelector(
+    (state) => state.settings
+  );
 
-  // const playStart = async () => {
-  //   try {
-  //     await announcerSounds.A19.replayAsync();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     loopSound(musicObj.backgroundMusic, music);
+  //   }, 2000);
+  // }, []);
 
   useFocusEffect(
     useCallback(() => {
-      // playStart();
+      // playStart(a19);
       dispatch(playersActions.nukePlayers());
       setPlayerCount(2);
     }, [])

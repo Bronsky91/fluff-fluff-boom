@@ -8,8 +8,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import BackgroundAnimation from "../components/background";
 import { announcerSounds, lessThanFive, flip } from "../utils/announcer";
-import playSound from "../utils/playsound";
+import { musicObj, timerMusic } from "../utils/music";
 import { soundEffectsObj } from "../utils/soundeffects";
+import playSound from "../utils/playsound";
+import loopSound from "../utils/loopsound";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -19,9 +21,10 @@ const smallerFontSize = Math.round(screenWidth * 0.5);
 export default function Timer() {
   const timerIntervalRef = useRef(0);
   const countdownIntervalRef = useRef(0);
+  const currentLoop = useRef(null);
   const [countdown, setCountdown] = useState(4);
   const [timer, setTimer] = useState(15);
-  const { soundEffects, announcer, timerSound } = useSelector(
+  const { soundEffects, announcer, timerSound, music } = useSelector(
     (state) => state.settings
   );
 
@@ -35,7 +38,11 @@ export default function Timer() {
 
   useEffect(() => {
     if (countdown === 0) {
+      const random4 = Math.floor(Math.random() * 4);
+      const loop = musicObj[timerMusic[random4]];
+      currentLoop.current = loop;
       playSound(soundEffectsObj.ClockTick, timerSound);
+      loopSound(loop, music);
       clearInterval(countdownIntervalRef.current);
       timerIntervalRef.current = setInterval(() => {
         setTimer((prevState) => prevState - 1);
@@ -53,6 +60,11 @@ export default function Timer() {
 
   useEffect(() => {
     if (timer === 0) {
+      const stopSound = async () => {
+        await soundEffectsObj.ClockTick.stopAsync();
+        await currentLoop.current.stopAsync();
+      };
+      stopSound();
       playSound(soundEffectsObj.Bomb, soundEffects);
       clearInterval(timerIntervalRef.current);
       router.push("score");
