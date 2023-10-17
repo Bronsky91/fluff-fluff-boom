@@ -16,7 +16,7 @@ export async function loadMusic() {
     loop2.loadAsync(require("../assets/music/loop2.mp3"));
     loop3.loadAsync(require("../assets/music/loop3.mp3"));
     loop4.loadAsync(require("../assets/music/loop4.mp3"));
-    backgroundMusic.loadAsync(require("../assets/music/background.mp3"));
+    await backgroundMusic.loadAsync(require("../assets/music/background.mp3"));
   } catch (error) {
     console.error("Error loading audio:", error);
   }

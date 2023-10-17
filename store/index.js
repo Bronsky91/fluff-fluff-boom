@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 
 import playersReducer from "./playersSlice";
 import settingsReducer from "./settingsSlice";
@@ -9,7 +9,5 @@ const store = configureStore({
     settings: settingsReducer,
   },
 });
-
-// export const settingsActions = settingsSlice.actions;
 
 export default store;

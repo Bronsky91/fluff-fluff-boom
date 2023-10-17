@@ -1,21 +1,26 @@
-import { useCallback, useEffect } from "react";
-import { Stack } from "expo-router/stack";
+import { useCallback, useEffect, useState } from "react";
 import { Provider } from "react-redux";
+
+import { Stack } from "expo-router/stack";
 import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 import store from "../store/index";
-import * as SplashScreen from "expo-splash-screen";
 import { loadSoundEffects } from "../utils/soundeffects";
 import { loadAnnouncer } from "../utils/announcer";
-import { loadMusic } from "../utils/music";
+import { loadMusic, musicObj } from "../utils/music";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
+  const [musicLoaded, setMusicLoaded] = useState(false);
+
   useEffect(() => {
     loadSoundEffects();
     loadAnnouncer();
-    loadMusic();
+    loadMusic().then(() => {
+      setMusicLoaded(true);
+    });
   }, []);
 
   const [fontsLoaded] = useFonts({
@@ -23,12 +28,12 @@ export default function Layout() {
   });
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (fontsLoaded && musicLoaded) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, musicLoaded]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || !musicLoaded) {
     return null;
   }
 

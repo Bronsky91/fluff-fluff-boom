@@ -68,8 +68,14 @@ const Footer = () => {
       <Pressable
         android_disableSound={true}
         onPress={backButton}
-        style={(!router.canGoBack() || pathName === "/score") && { opacity: 0 }}
-        disabled={!router.canGoBack() || pathName === "/score"}
+        style={
+          (!router.canGoBack() ||
+            pathName === "/score" ||
+            pathName === "/winner") && { opacity: 0 }
+        }
+        disabled={
+          !router.canGoBack() || pathName === "/score" || pathName === "/winner"
+        }
       >
         <Image
           source={require("../assets/backbutton.png")}

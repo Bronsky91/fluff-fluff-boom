@@ -35,15 +35,15 @@ export default function App() {
     (state) => state.settings
   );
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     loopSound(musicObj.backgroundMusic, music);
-  //   }, 2000);
-  // }, []);
+  useEffect(() => {
+    loopSound(musicObj.backgroundMusic, music, 0.1);
+    if (!music) {
+      musicObj.backgroundMusic.stopAsync();
+    }
+  }, [music]);
 
   useFocusEffect(
     useCallback(() => {
-      // playStart(a19);
       dispatch(playersActions.nukePlayers());
       setPlayerCount(2);
     }, [])

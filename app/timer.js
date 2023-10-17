@@ -42,7 +42,7 @@ export default function Timer() {
       const loop = musicObj[timerMusic[random4]];
       currentLoop.current = loop;
       playSound(soundEffectsObj.ClockTick, timerSound);
-      loopSound(loop, music);
+      loopSound(loop, music, 0.2);
       clearInterval(countdownIntervalRef.current);
       timerIntervalRef.current = setInterval(() => {
         setTimer((prevState) => prevState - 1);
