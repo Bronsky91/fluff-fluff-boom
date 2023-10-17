@@ -29,6 +29,7 @@ export default function Timer() {
   );
 
   useEffect(() => {
+    musicObj.backgroundMusic.pauseAsync();
     playSound(announcerSounds.A11, announcer);
     countdownIntervalRef.current = setInterval(() => {
       setCountdown((prevState) => prevState - 1);

@@ -8,7 +8,7 @@ import * as SplashScreen from "expo-splash-screen";
 import store from "../store/index";
 import { loadSoundEffects } from "../utils/soundeffects";
 import { loadAnnouncer } from "../utils/announcer";
-import { loadMusic, musicObj } from "../utils/music";
+import { loadMusic } from "../utils/music";
 
 SplashScreen.preventAutoHideAsync();
 

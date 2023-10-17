@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  Alert,
   Modal,
   Pressable,
 } from "react-native";
@@ -19,7 +18,9 @@ import { PLAYER_IMAGES } from "../constants";
 import { playersActions } from "../store/playersSlice";
 import { soundEffectsObj } from "../utils/soundeffects";
 import { announcerSounds } from "../utils/announcer";
+import { musicObj } from "../utils/music";
 import playSound from "../utils/playsound";
+import loopSound from "../utils/loopsound";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -30,7 +31,9 @@ const MAX_SCORE = 14;
 
 export default function Score() {
   const { players } = useSelector((state) => state.players);
-  const { soundEffects, announcer } = useSelector((state) => state.settings);
+  const { soundEffects, announcer, music } = useSelector(
+    (state) => state.settings
+  );
   const [modalVisible, setModalVisible] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const winner = players.find((player) => player.score === 15);
@@ -45,6 +48,7 @@ export default function Score() {
 
   useEffect(() => {
     setTimeout(() => {
+      loopSound(musicObj.backgroundMusic, music, 0.1);
       playSound(announcerSounds.A18, announcer);
     }, 3000);
   }, []);
