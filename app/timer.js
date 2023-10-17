@@ -66,7 +66,7 @@ export default function Timer() {
         await currentLoop.current.stopAsync();
       };
       stopSound();
-      playSound(soundEffectsObj.Bomb, soundEffects);
+      playSound(soundEffectsObj.Bomb, soundEffects, 0.85);
       clearInterval(timerIntervalRef.current);
       router.push("score");
     }

@@ -50,7 +50,7 @@ export default function App() {
   );
 
   const onStartPress = () => {
-    playSound(soundEffectsObj.Cowbell, soundEffects);
+    playSound(soundEffectsObj.Cowbell, soundEffects, 0.8);
     for (let i = 2; i < playerCount; i++) {
       dispatch(playersActions.addPlayer());
     }
@@ -61,7 +61,7 @@ export default function App() {
   const incrementDisabled = playerCount === MAX_PLAYER_COUNT;
 
   const changePlayerCount = (change) => {
-    playSound(soundEffectsObj.Bell, soundEffects);
+    playSound(soundEffectsObj.Bell, soundEffects, 0.95);
     setPlayerCount((pc) => pc + change);
   };
 

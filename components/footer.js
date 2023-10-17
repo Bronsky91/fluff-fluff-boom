@@ -25,12 +25,12 @@ const Footer = () => {
   };
 
   const settingsPressHandler = () => {
-    playSound(soundEffectsObj.Bell, soundEffects);
+    playSound(soundEffectsObj.Bell, soundEffects, 0.95);
     router.push("settings");
   };
 
   const backButton = () => {
-    playSound(soundEffectsObj.Bell, soundEffects);
+    playSound(soundEffectsObj.Bell, soundEffects, 0.95);
     if (playersScore() && pathName === "/start") {
       router.push("score");
     } else {

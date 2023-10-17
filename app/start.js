@@ -34,7 +34,7 @@ export default function Start() {
   }, []);
 
   const startTimerHandler = () => {
-    playSound(soundEffectsObj.Cowbell, soundEffects);
+    playSound(soundEffectsObj.Cowbell, soundEffects, 0.8);
     router.push("timer");
   };
 
