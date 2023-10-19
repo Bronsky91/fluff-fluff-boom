@@ -1,5 +1,11 @@
 import React, { memo, useEffect, useRef } from "react";
-import { Animated, Easing, ImageBackground, StyleSheet } from "react-native";
+import {
+  Animated,
+  Easing,
+  ImageBackground,
+  StyleSheet,
+  Platform,
+} from "react-native";
 
 import backgroundImage from "../assets/background.png";
 import {
@@ -62,8 +68,8 @@ export default BackgroundAnimation;
 const styles = StyleSheet.create({
   background: {
     position: "absolute",
-    width: 1200,
-    height: 1200,
+    width: Platform.isPad ? 2400 : 1200,
+    height: Platform.isPad ? 2400 : 1200,
     top: 0,
     opacity: 0.2,
     transform: [

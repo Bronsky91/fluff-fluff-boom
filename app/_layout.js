@@ -1,46 +1,46 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 
 import { Stack } from "expo-router/stack";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 
 import store from "../store/index";
 import { loadSoundEffects } from "../utils/soundeffects";
 import { loadAnnouncer } from "../utils/announcer";
 import { loadMusic } from "../utils/music";
+import { SplashScreen } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
-  const [musicLoaded, setMusicLoaded] = useState(false);
+  const [soundLoaded, setSoundLoaded] = useState(false);
 
   useEffect(() => {
-    loadSoundEffects();
-    loadAnnouncer();
-    loadMusic().then(() => {
-      setMusicLoaded(true);
-    });
-  }, []);
+    const loadAllSounds = async () => {
+      await Promise.all([loadSoundEffects(), loadAnnouncer(), loadMusic()]);
+      setSoundLoaded(true);
+    };
+
+    loadAllSounds();
+  });
 
   const [fontsLoaded] = useFonts({
     PermanentMarker: require("../assets/PermanentMarker-Regular.ttf"),
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded && musicLoaded) {
-      await SplashScreen.hideAsync();
+  useEffect(() => {
+    if (fontsLoaded && soundLoaded) {
+      SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, musicLoaded]);
+  }, [fontsLoaded, soundLoaded]);
 
-  if (!fontsLoaded || !musicLoaded) {
+  if (!fontsLoaded || !soundLoaded) {
     return null;
   }
 
-  //todo:Background animation in layout
   return (
     <Provider store={store}>
-      <Stack initialRouteName="index" onLayout={onLayoutRootView}>
+      <Stack initialRouteName="index">
         <Stack.Screen
           name="index"
           options={{

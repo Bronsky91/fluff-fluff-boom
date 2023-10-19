@@ -13,9 +13,14 @@ export async function loadAnnouncer() {
   try {
     for (const key of Object.keys(ANNOUNCER_FILES)) {
       announcerSounds[key] = new Audio.Sound();
-      announcerSounds[key].loadAsync(ANNOUNCER_FILES[key]);
+
+      const status = await announcerSounds[key].getStatusAsync();
+
+      if (!status.isLoaded) {
+        await announcerSounds[key].loadAsync(ANNOUNCER_FILES[key]);
+      }
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error loading announcer", error);
   }
 }

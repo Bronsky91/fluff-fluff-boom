@@ -19,7 +19,6 @@ import { soundEffectsObj } from "../utils/soundeffects";
 import { musicObj } from "../utils/music";
 import playSound from "../utils/playsound";
 import loopSound from "../utils/loopsound";
-// import { announcerSounds } from "../utils/announcer";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
