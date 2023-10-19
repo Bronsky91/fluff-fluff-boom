@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { View } from "react-native";
 import { Provider } from "react-redux";
 
 import { Stack } from "expo-router/stack";
@@ -35,7 +36,7 @@ export default function Layout() {
   }, [fontsLoaded, soundLoaded]);
 
   if (!fontsLoaded || !soundLoaded) {
-    return null;
+    return <View style={{ backgroundColor: "#004aad", flex: 1 }} />;
   }
 
   return (

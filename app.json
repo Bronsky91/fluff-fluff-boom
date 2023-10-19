@@ -1,7 +1,7 @@
 {
   "expo": {
     "owner": "play-again-games",
-    "name": "fluff-fluff-boom",
+    "name": "Fluff Fluff Boom",
     "slug": "fluff-fluff-boom",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,8 +17,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "icon": "./assets/icon.png",
       "bundleIdentifier": "com.playagaingames.flufffluffboom",
-      "buildNumber": "1"
+      "buildNumber": "3",
+      "backgroundColor": "#004aad"
     },
     "android": {
       "adaptiveIcon": {
