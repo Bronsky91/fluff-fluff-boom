@@ -17,14 +17,16 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.playagaingames.flufffluffboom"
+      "bundleIdentifier": "com.playagaingames.flufffluffboom",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#004aad"
       },
-      "package": "com.playagaingames.flufffluffboom"
+      "package": "com.playagaingames.flufffluffboom",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
