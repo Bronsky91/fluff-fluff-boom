@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import { Stack } from "expo-router/stack";
 import { useFonts } from "expo-font";
 
-import store from "../store/index";
+import { store, persistor } from "../store/store";
 import { loadSoundEffects } from "../utils/soundeffects";
 import { loadAnnouncer } from "../utils/announcer";
 import { loadMusic } from "../utils/music";
@@ -41,44 +42,46 @@ export default function Layout() {
 
   return (
     <Provider store={store}>
-      <Stack initialRouteName="index">
-        <Stack.Screen
-          name="index"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="start"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="settings"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="timer"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="score"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="winner"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
+      <PersistGate loading={null} persistor={persistor}>
+        <Stack initialRouteName="index">
+          <Stack.Screen
+            name="index"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="start"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="settings"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="timer"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="score"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="winner"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </PersistGate>
     </Provider>
   );
 }
